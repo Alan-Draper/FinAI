@@ -45,14 +45,16 @@ public class FirebaseLogin extends AppCompatActivity {
     }
 
 
-    private void writeNewUser(String userId, String name, String email) {
+    private User writeNewUser(String userId, String name, String email) {
         User user = new User(name, email);
-
         mRootRef.child("users").child(userId).setValue(user);
+        return user;
     }
 
-    public void showHome() {
+
+    public void showHome(User user) {
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        intent.putExtra("CurrentUser", user);
         startActivity(intent);
     }
 
@@ -64,8 +66,8 @@ public class FirebaseLogin extends AppCompatActivity {
 
             // Successfully signed in
             if (resultCode == RESULT_OK) {
-                this.writeNewUser(auth.getUid(), auth.getCurrentUser().getDisplayName(), auth.getCurrentUser().getEmail());
-                showHome();
+                showHome(this.writeNewUser(auth.getUid(), auth.getCurrentUser().getDisplayName(), auth.getCurrentUser().getEmail()));
+
                 finish();
             } else {
                 // Sign in failed
