@@ -30,10 +30,6 @@ import java.util.Arrays;
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
-    private static final int RC_SIGN_IN = 123;
-    private static final String TAG = "";
-    FirebaseAuth auth = FirebaseAuth.getInstance();
-    DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
 
 
     @Override
@@ -62,26 +58,8 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
-        if (auth.getCurrentUser() != null) {
-            // already signed in
-        } else {
-            // not signed in
-        }
-        // Choose an arbitrary request code value
-        startActivityForResult(
-                // Get an instance of AuthUI based on the default app
-                AuthUI.getInstance().createSignInIntentBuilder().setAvailableProviders(Arrays.asList(
-                        new AuthUI.IdpConfig.GoogleBuilder().build(),
-                        new AuthUI.IdpConfig.EmailBuilder().build()))
-                        .setTheme(R.style.LoginTheme)
-                        .setLogo(R.drawable.logo).build(),RC_SIGN_IN);
     }
 
-    private void writeNewUser(String userId, String name, String email) {
-        User user = new User(name, email);
-
-        mRootRef.child("users").child(userId).setValue(user);
-    }
 
 
     @Override
@@ -98,32 +76,5 @@ public class MainActivity extends AppCompatActivity {
                 || super.onSupportNavigateUp();
     }
 
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        // RC_SIGN_IN is the request code you passed into startActivityForResult(...) when starting the sign in flow.
-        if (requestCode == RC_SIGN_IN) {
-            IdpResponse response = IdpResponse.fromResultIntent(data);
 
-            // Successfully signed in
-            if (resultCode == RESULT_OK) {
-                this.writeNewUser(auth.getUid(), auth.getCurrentUser().getDisplayName(), auth.getCurrentUser().getEmail());
-                finish();
-            } else {
-                // Sign in failed
-                if (response == null) {
-                    // User pressed back button
-                    Toast.makeText(MainActivity.this, R.string.sign_in_cancelled,Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                if (response.getError().getErrorCode() == ErrorCodes.NO_NETWORK) {
-                    Toast.makeText(MainActivity.this, R.string.no_internet_connection,Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                Toast.makeText(MainActivity.this,R.string.unknown_error,Toast.LENGTH_SHORT).show();
-                Log.e(TAG, "Sign-in error: ", response.getError());
-            }
-        }
-    }
 }
