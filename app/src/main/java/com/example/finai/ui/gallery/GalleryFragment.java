@@ -34,7 +34,6 @@ public class GalleryFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_gallery, container, false);
-        final TextView textView = root.findViewById(R.id.text_gallery);
         signout = root.findViewById(R.id.button2);
 
         signout.setOnClickListener(v-> {
@@ -42,8 +41,6 @@ public class GalleryFragment extends Fragment {
                 FirebaseAuth.getInstance().signOut();
                 startActivity(new Intent(getApplicationContext() ,FirebaseLogin.class));
         });
-
-        galleryViewModel.getText().observe(getViewLifecycleOwner(), s -> textView.setText(s));
         return root;
 
 
