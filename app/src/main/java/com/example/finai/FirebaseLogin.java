@@ -1,16 +1,32 @@
 package com.example.finai;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.ErrorCodes;
 import com.firebase.ui.auth.IdpResponse;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -27,21 +43,14 @@ public class FirebaseLogin extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_firebase_login);
-
-
-        if (auth.getCurrentUser() != null) {
-            // already signed in
-        } else {
-            // not signed in
-        }
-        // Choose an arbitrary request code value
         startActivityForResult(
                 // Get an instance of AuthUI based on the default app
                 AuthUI.getInstance().createSignInIntentBuilder().setAvailableProviders(Arrays.asList(
                         new AuthUI.IdpConfig.GoogleBuilder().build(),
                         new AuthUI.IdpConfig.EmailBuilder().build()))
                         .setTheme(R.style.LoginTheme)
-                        .setLogo(R.drawable.logo).build(),RC_SIGN_IN);
+                        .setIsSmartLockEnabled(false)
+                        .setLogo(R.drawable.logo).build(), RC_SIGN_IN);
     }
 
 
@@ -58,33 +67,32 @@ public class FirebaseLogin extends AppCompatActivity {
         startActivity(intent);
     }
 
+
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         // RC_SIGN_IN is the request code you passed into startActivityForResult(...) when starting the sign in flow.
         if (requestCode == RC_SIGN_IN) {
             IdpResponse response = IdpResponse.fromResultIntent(data);
+                // Successfully signed in
+                if (resultCode == RESULT_OK) {
+                    showHome(this.writeNewUser(auth.getUid(), auth.getCurrentUser().getDisplayName(), auth.getCurrentUser().getEmail()));
+                    finish();
+                } else {
+                    // Sign in failed
+                    if (response == null) {
+                        // User pressed back button
+                        Toast.makeText(FirebaseLogin.this, R.string.sign_in_cancelled, Toast.LENGTH_SHORT).show();
+                        return;
+                    }
 
-            // Successfully signed in
-            if (resultCode == RESULT_OK) {
-                showHome(this.writeNewUser(auth.getUid(), auth.getCurrentUser().getDisplayName(), auth.getCurrentUser().getEmail()));
+                    if (response.getError().getErrorCode() == ErrorCodes.NO_NETWORK) {
+                        Toast.makeText(FirebaseLogin.this, R.string.no_internet_connection, Toast.LENGTH_SHORT).show();
+                        return;
+                    }
 
-                finish();
-            } else {
-                // Sign in failed
-                if (response == null) {
-                    // User pressed back button
-                    Toast.makeText(FirebaseLogin.this, R.string.sign_in_cancelled,Toast.LENGTH_SHORT).show();
-                    return;
+                    Toast.makeText(FirebaseLogin.this, R.string.unknown_error, Toast.LENGTH_SHORT).show();
+                    Log.e(TAG, "Sign-in error: ", response.getError());
                 }
-
-                if (response.getError().getErrorCode() == ErrorCodes.NO_NETWORK) {
-                    Toast.makeText(FirebaseLogin.this, R.string.no_internet_connection,Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                Toast.makeText(FirebaseLogin.this,R.string.unknown_error,Toast.LENGTH_SHORT).show();
-                Log.e(TAG, "Sign-in error: ", response.getError());
             }
         }
     }
-}
