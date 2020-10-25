@@ -31,5 +31,24 @@
         android:id="@+id/loanApplication"
         android:name="com.example.finai.ui.loan.LoanApplication"
         android:label="Loan Details"
-        tools:layout="@layout/loan_application_fragment" />
+        tools:layout="@layout/loan_application_fragment" >
+        <action
+            android:id="@+id/action_loanApplication_to_rejected"
+            app:destination="@id/rejected"
+            app:enterAnim="@anim/fui_slide_in_right" />
+        <action
+            android:id="@+id/action_loanApplication_to_approved"
+            app:destination="@id/approved"
+            app:enterAnim="@anim/fui_slide_in_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/rejected"
+        android:name="com.example.finai.ui.approvals.Rejected"
+        android:label="fragment_rejected"
+        tools:layout="@layout/fragment_rejected" />
+    <fragment
+        android:id="@+id/approved"
+        android:name="com.example.finai.Approved"
+        android:label="fragment_approved"
+        tools:layout="@layout/fragment_approved" />
 </navigation>

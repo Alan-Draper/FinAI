@@ -34,7 +34,7 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
-                    android:id="@+id/textView18"
+                    android:id="@+id/genderLabel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
@@ -43,16 +43,17 @@
                     android:textColor="#070707"
                     android:textSize="24sp" />
 
-                <EditText
-                    android:id="@+id/editTextTextPersonName24"
+                <Spinner
+                    android:id="@+id/genderText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
                     android:ems="10"
+                    android:entries="@array/gender"
                     android:inputType="textPersonName" />
 
                 <TextView
-                    android:id="@+id/textView17"
+                    android:id="@+id/maritalStatusLabel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
@@ -61,87 +62,71 @@
                     android:textColor="#070707"
                     android:textSize="24sp" />
 
-                <EditText
-                    android:id="@+id/editTextTextPersonName23"
+                <Spinner
+                    android:id="@+id/marital_Status_Box"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
                     android:ems="10"
-                    android:inputType="textPersonName" />
+                    android:entries="@array/marital_status"/>
 
                 <TextView
-                    android:id="@+id/textView16"
+                    android:id="@+id/dependantsLabel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
                     android:fontFamily="@font/audiowide"
-                    android:text="No Of Dependants"
+                    android:text="Dependants"
                     android:textColor="#070707"
                     android:textSize="24sp" />
 
-                <EditText
-                    android:id="@+id/editTextTextPersonName22"
+                <Spinner
+                    android:id="@+id/dependants_box"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
                     android:ems="10"
-                    android:inputType="textPersonName" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="80dp"
-                    android:layout_weight="1"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/textView15"
-                        android:layout_width="171dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/audiowide"
-                        android:text="Graduate/Not Graduated"
-                        android:textColor="#070707"
-                        android:textSize="24sp" />
-
-                    <CheckBox
-                        android:id="@+id/checkBox"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="20dp"
-                        android:layout_weight="1"
-                        android:checked="false" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="80dp"
-                    android:layout_marginTop="-40dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_weight="1"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/textView14"
-                        android:layout_width="171dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/audiowide"
-                        android:text="Employed/Self Employed"
-                        android:textColor="#070707"
-                        android:textSize="24sp" />
-
-                    <CheckBox
-                        android:id="@+id/checkBox2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="20dp"
-                        android:layout_weight="1"
-                        android:checked="false" />
-                </LinearLayout>
+                    android:entries="@array/dependants" />
 
                 <TextView
-                    android:id="@+id/textView13"
+                    android:id="@+id/employmentStatusLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:fontFamily="@font/audiowide"
+                    android:text="Employment Status"
+                    android:textColor="#070707"
+                    android:textSize="24sp" />
+
+                <Spinner
+                    android:id="@+id/employmentStatusBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:ems="10"
+                    android:entries="@array/employment" />
+
+                <TextView
+                    android:id="@+id/educatedLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:fontFamily="@font/audiowide"
+                    android:text="College Eduacated"
+                    android:textColor="#070707"
+                    android:textSize="24sp" />
+
+                <Spinner
+                    android:id="@+id/educated_box"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:ems="10"
+                    android:entries="@array/college_education" />
+
+
+                <TextView
+                    android:id="@+id/incomeLabel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
@@ -151,7 +136,7 @@
                     android:textSize="24sp" />
 
                 <EditText
-                    android:id="@+id/editTextTextPersonName19"
+                    android:id="@+id/incomeText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
@@ -159,7 +144,7 @@
                     android:inputType="textPersonName" />
 
                 <TextView
-                    android:id="@+id/textView12"
+                    android:id="@+id/coIncomeLabel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
@@ -169,7 +154,7 @@
                     android:textSize="24sp" />
 
                 <EditText
-                    android:id="@+id/editTextTextPersonName18"
+                    android:id="@+id/coIncomeText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
@@ -177,7 +162,7 @@
                     android:inputType="textPersonName" />
 
                 <TextView
-                    android:id="@+id/textView3"
+                    android:id="@+id/loanAmountLabel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
@@ -187,7 +172,7 @@
                     android:textSize="24sp" />
 
                 <EditText
-                    android:id="@+id/editTextTextPersonName2"
+                    android:id="@+id/loanAmountText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.25"
@@ -195,7 +180,7 @@
                     android:inputType="textPersonName" />
 
                 <TextView
-                    android:id="@+id/textView19"
+                    android:id="@+id/loanTermLabel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
@@ -205,7 +190,7 @@
                     android:textSize="24sp" />
 
                 <EditText
-                    android:id="@+id/editTextTextPersonName25"
+                    android:id="@+id/loanTermText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
@@ -213,7 +198,7 @@
                     android:inputType="textPersonName" />
 
                 <TextView
-                    android:id="@+id/textView20"
+                    android:id="@+id/creditScoreLabel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
@@ -223,12 +208,30 @@
                     android:textSize="24sp" />
 
                 <EditText
-                    android:id="@+id/editTextTextPersonName26"
+                    android:id="@+id/creditScoreText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
                     android:ems="10"
                     android:inputType="textPersonName" />
+
+                <TextView
+                    android:id="@+id/locationLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:fontFamily="@font/audiowide"
+                    android:text="Location"
+                    android:textColor="#070707"
+                    android:textSize="24sp" />
+
+                <Spinner
+                    android:id="@+id/location_box"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:ems="10"
+                    android:entries="@array/location" />
 
             </LinearLayout>
 
