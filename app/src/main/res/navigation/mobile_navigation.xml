@@ -23,11 +23,6 @@
         tools:layout="@layout/fragment_gallery" />
 
     <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="com.example.finai.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_slideshow" />
-    <fragment
         android:id="@+id/loanApplication"
         android:name="com.example.finai.ui.loan.LoanApplication"
         android:label="Loan Details"
@@ -48,7 +43,7 @@
         tools:layout="@layout/fragment_rejected" />
     <fragment
         android:id="@+id/approved"
-        android:name="com.example.finai.Approved"
+        android:name="com.example.finai.ui.approvals.Approved"
         android:label="fragment_approved"
         tools:layout="@layout/fragment_approved" />
 </navigation>

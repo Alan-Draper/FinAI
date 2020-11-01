@@ -5,12 +5,58 @@ import android.os.Parcelable;
 
 public class User implements Parcelable {
 
-    public String username;
-    public String email;
+    private String username;
+    private String email;
+    private String gender;
+    private String maritalStatus;
+    private String dependants;
+    private String employmentStatus;
+    private String education;
+
 
     public User(String username, String email) {
         setUsername(username);
         setEmail(email);
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getMaritalStatus() {
+        return maritalStatus;
+    }
+
+    public void setMaritalStatus(String maritalStatus) {
+        this.maritalStatus = maritalStatus;
+    }
+
+    public String getDependants() {
+        return dependants;
+    }
+
+    public void setDependants(String dependants) {
+        this.dependants = dependants;
+    }
+
+    public String getEmploymentStatus() {
+        return employmentStatus;
+    }
+
+    public void setEmploymentStatus(String employmentStatus) {
+        this.employmentStatus = employmentStatus;
+    }
+
+    public String getEducation() {
+        return education;
+    }
+
+    public void setEducation(String education) {
+        this.education = education;
     }
 
     protected User(Parcel in) {
