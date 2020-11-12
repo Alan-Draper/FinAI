@@ -18,6 +18,10 @@ public class Loan {
     private String loanStatus;
     private String loanOfficer;
 
+    public Loan(){
+
+    }
+
     public Loan(String loanID, String userID, String gender, String maritalStatus, String dependants, String education, String employment, String income, String coIncome, String loanAmount, String loanTerm, String creditScore, String loanStatus, String location) {
         this.loanID = loanID;
         this.userID = userID;

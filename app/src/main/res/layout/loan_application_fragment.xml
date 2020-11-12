@@ -5,7 +5,7 @@
     android:id="@+id/frameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/thumbnail_bg1"
+    android:background="@drawable/sunset_suberb_001"
     tools:context=".ui.loan.LoanApplication">
 
     <ScrollView
@@ -68,7 +68,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
                     android:ems="10"
-                    android:entries="@array/marital_status"/>
+                    android:entries="@array/marital_status" />
 
                 <TextView
                     android:id="@+id/dependantsLabel"

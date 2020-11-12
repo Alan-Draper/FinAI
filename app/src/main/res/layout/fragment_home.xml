@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/thumbnail_bg1"
-    tools:context=".ui.home.HomeFragment" >
+    android:background="@drawable/sunset_suberb_001"
+    tools:context=".ui.home.HomeFragment">
 
     <Button
         android:id="@+id/currentApplication"

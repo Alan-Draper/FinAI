@@ -65,6 +65,7 @@ public class LoanApplication extends Fragment {
     DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
     DatabaseReference loanRef = mRootRef.child("LoanApplications");
     DatabaseReference userRef = mRootRef.child("users");
+    DatabaseReference loanOfficerRef = mRootRef.child("loanOfficer");
 
     public static LoanApplication newInstance() {
         return new LoanApplication();
@@ -173,13 +174,28 @@ public class LoanApplication extends Fragment {
             data.putFloat(Float.parseFloat(location));
 
         interpreter.run(data, dataout);
-
             dataout.rewind();
             FloatBuffer probabilities = dataout.asFloatBuffer();
             float probability = probabilities.get();
             Log.i(TAG, String.format("%s: %1.4f", "probability", probability));
 
         System.out.println(probability);
+            // startint to check count on loan officer to assign to loans
+            /*String UID = auth.getUid();
+            Query findNew = loanOfficerRef.child().orderByChild("userID").equalTo(UID).limitToLast(1);
+            findNew.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for(DataSnapshot singleSnapshot : snapshot.getChildren()){
+                        Loan loan = singleSnapshot.getValue(Loan.class);
+
+                        if(loan.getLoanStatus().equals("Pre Approved")) {
+
+                        } else if(loan.getLoanStatus().equals("Rejected")) {
+                        }
+
+                    }
+                }*/
 
         if (probability <= 0.55) {
             loanStatus = "Rejected";

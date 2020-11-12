@@ -28,7 +28,7 @@
         <item name="android:textColor">@color/white</item>
         <item name="android:textColorPrimary">@color/colorPrimary</item>
         <item name="android:textColorSecondary">@color/colorPrimary</item>
-        <item name="android:windowBackground">@drawable/suburbs</item>
+        <item name="android:windowBackground">@drawable/sunset_suberb_001</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:textColorHint">@color/colorPrimary</item>
