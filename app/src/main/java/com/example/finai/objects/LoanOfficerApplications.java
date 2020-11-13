@@ -1,7 +1,5 @@
 package com.example.finai.objects;
 
-import com.google.firebase.database.DataSnapshot;
-
 public class LoanOfficerApplications {
 
     private String loanOfficerID;
@@ -10,7 +8,7 @@ public class LoanOfficerApplications {
     private String username;
     private String email;
     private Long openLoans;
-    private String pNumber;
+    private String phoneNumber;
 
     public LoanOfficerApplications() {}
 
@@ -52,11 +50,11 @@ public class LoanOfficerApplications {
         this.email = email;
     }
 
-    public String getpNumber() {
-        return pNumber;
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public void setpNumber(String pNumber) {
-        this.pNumber = pNumber;
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 }

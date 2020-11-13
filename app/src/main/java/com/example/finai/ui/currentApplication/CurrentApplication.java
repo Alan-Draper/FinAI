@@ -1,6 +1,8 @@
 package com.example.finai.ui.currentApplication;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -29,7 +31,7 @@ public class CurrentApplication extends Fragment {
     DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
     DatabaseReference loanOfficerRef = mRootRef.child("loanOfficer");
     TextView lOfficer, loanAmount, loanTerm, currentStatus;
-    ImageView paypal, status;
+    ImageView paypal, status, phone;
 
 
     @SuppressLint("RestrictedApi")
@@ -42,6 +44,7 @@ public class CurrentApplication extends Fragment {
         paypal = root.findViewById(R.id.paypal);
         status = root.findViewById(R.id.status);
         currentStatus = root.findViewById(R.id.CurrentStatus);
+        phone = root.findViewById(R.id.phoneCallImage);
         String UID = auth.getUid();
         Query findNew = mRootRef.child("LoanApplications").orderByChild("userID").equalTo(UID).limitToLast(1);
             findNew.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -49,7 +52,7 @@ public class CurrentApplication extends Fragment {
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     for(DataSnapshot singleSnapshot : snapshot.getChildren()){
                         Loan loan = singleSnapshot.getValue(Loan.class);
-                        findLoanOfficerName(loan.getLoanOfficer(),lOfficer);
+                        findLoanOfficerName(loan.getLoanOfficer(),lOfficer, phone);
                         loanAmount.setText(loan.getLoanAmount());
                         loanTerm.setText(loan.getLoanTerm());;
                         if(loan.getLoanStatus().equals("Pre Approved")) {
@@ -74,7 +77,7 @@ public class CurrentApplication extends Fragment {
 
     }
 
-    public void findLoanOfficerName(String LoanID, TextView loanName) {
+    public void findLoanOfficerName(String LoanID, TextView loanName, ImageView phone) {
         Query findNew = loanOfficerRef.orderByKey().equalTo(LoanID);
         findNew.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -82,6 +85,13 @@ public class CurrentApplication extends Fragment {
                 for(DataSnapshot singleSnapshot : snapshot.getChildren()){
                     LoanOfficerApplications loanoff = singleSnapshot.getValue(LoanOfficerApplications.class);
                     loanName.setText(loanoff.getUsername());
+                    phone.setOnClickListener(v -> {
+                        Intent dial = new Intent();
+                        dial.setAction("android.intent.action.DIAL");
+                        dial.setData(Uri.parse("tel:"+loanoff.getPhoneNumber()));
+                        startActivity(dial);
+
+                    })  ;
                 }
             }
 

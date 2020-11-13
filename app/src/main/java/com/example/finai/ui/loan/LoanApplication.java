@@ -24,7 +24,6 @@ import com.example.finai.R;
 import com.example.finai.objects.LoanOfficerApplications;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -93,8 +92,8 @@ public class LoanApplication extends Fragment {
                     }
                 });
 
-        lList = populateLoanList();
 
+        lList = populateLoanList();
         genderBox = root.findViewById(R.id.genderText);
         maritalStatusBox = root.findViewById(R.id.marital_Status_Box);
         dependantsBox = root.findViewById(R.id.dependants_box);
@@ -210,11 +209,10 @@ public class LoanApplication extends Fragment {
         return root;
     }
 
-    private Loan writeNewLoan(String loanID, String userID, String gender, String maritalStatus, String dependants, String education, String employment, String income, String coIncome, String loanAmount, String loanTerm, String creditScore, String status,String location, String loanOfficer) {
+    private void writeNewLoan(String loanID, String userID, String gender, String maritalStatus, String dependants, String education, String employment, String income, String coIncome, String loanAmount, String loanTerm, String creditScore, String status, String location, String loanOfficer) {
 
         Loan loan = new Loan(loanID,userID,gender,maritalStatus,dependants,education,employment,income,coIncome,loanAmount,loanTerm,creditScore,status, location, loanOfficer);
         loanRef.child(loanID).setValue(loan);
-        return loan;
     }
 
     private LoanOfficerApplications updateOpenItems(String loanId, Long loanStatus) {
@@ -227,6 +225,7 @@ public class LoanApplication extends Fragment {
                 for (DataSnapshot child : snapshot.getChildren()) {
                     LoanOfficerApplications l = child.getValue(LoanOfficerApplications.class);
                     String parentKey = child.getKey();
+                    assert l != null;
                     LoanOfficerApplications l2 = new LoanOfficerApplications(parentKey, l.getOpenLoans());
                     lList.add(l2);
                     System.out.println(l2.getLoanOfficerID());
@@ -259,7 +258,7 @@ public class LoanApplication extends Fragment {
         LoanOfficerApplications lowest = new LoanOfficerApplications();
         int smallest = 170000000;
         int countSmallest = 0;
-        System.out.println(lList.size());
+        System.out.println(lList.size() + " 261");
         for (LoanOfficerApplications i : lList) {
             if (i.getOpenLoans() < smallest) {
                 System.out.println(i.getOpenLoans());
@@ -282,6 +281,7 @@ public class LoanApplication extends Fragment {
             openItems.child("openLoans").setValue(openItemsInt);
             return numApps.get(num).getLoanOfficerID();
         } else {
+            assert lowest != null;
             String loanOfficerID = lowest.getLoanOfficerID();
             DatabaseReference openItems = FirebaseDatabase.getInstance().getReference("loanOfficer").child(lowest.getLoanOfficerID());
             int openItemsInt = Math.toIntExact(lowest.getOpenLoans());
@@ -293,7 +293,7 @@ public class LoanApplication extends Fragment {
         }
     }
 
-        public ArrayList populateLoanList () {
+        public ArrayList<LoanOfficerApplications> populateLoanList () {
             String UID = auth.getUid();
             Query findNew = loanOfficerRef.orderByKey();
             findNew.addValueEventListener(new ValueEventListener() {
