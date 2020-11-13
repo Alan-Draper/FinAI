@@ -1,4 +1,4 @@
-package com.example.finai;
+package com.example.finai.objects;
 
 public class Loan {
 
@@ -22,7 +22,7 @@ public class Loan {
 
     }
 
-    public Loan(String loanID, String userID, String gender, String maritalStatus, String dependants, String education, String employment, String income, String coIncome, String loanAmount, String loanTerm, String creditScore, String loanStatus, String location) {
+    public Loan(String loanID, String userID, String gender, String maritalStatus, String dependants, String education, String employment, String income, String coIncome, String loanAmount, String loanTerm, String creditScore, String loanStatus, String location, String loanOfficer) {
         this.loanID = loanID;
         this.userID = userID;
         this.gender = gender;
@@ -37,7 +37,7 @@ public class Loan {
         this.creditScore = creditScore;
         this.location = location;
         this.loanStatus = loanStatus;
-        this.loanOfficer = " ";
+        this.loanOfficer = loanOfficer;
     }
 
     public String getLoanID() {

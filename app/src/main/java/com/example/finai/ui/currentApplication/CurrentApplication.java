@@ -1,24 +1,20 @@
 package com.example.finai.ui.currentApplication;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.finai.FirebaseLogin;
-import com.example.finai.Loan;
+import com.example.finai.objects.Loan;
 import com.example.finai.R;
-import com.example.finai.ui.gallery.GalleryViewModel;
+import com.example.finai.objects.LoanOfficerApplications;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -27,12 +23,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-import static com.firebase.ui.auth.AuthUI.getApplicationContext;
-
 public class CurrentApplication extends Fragment {
 
     FirebaseAuth auth = FirebaseAuth.getInstance();
     DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
+    DatabaseReference loanOfficerRef = mRootRef.child("loanOfficer");
     TextView lOfficer, loanAmount, loanTerm, currentStatus;
     ImageView paypal, status;
 
@@ -54,7 +49,7 @@ public class CurrentApplication extends Fragment {
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     for(DataSnapshot singleSnapshot : snapshot.getChildren()){
                         Loan loan = singleSnapshot.getValue(Loan.class);
-                        lOfficer.setText(loan.getLoanOfficer());
+                        findLoanOfficerName(loan.getLoanOfficer(),lOfficer);
                         loanAmount.setText(loan.getLoanAmount());
                         loanTerm.setText(loan.getLoanTerm());;
                         if(loan.getLoanStatus().equals("Pre Approved")) {
@@ -77,5 +72,24 @@ public class CurrentApplication extends Fragment {
 
         return root;
 
+    }
+
+    public void findLoanOfficerName(String LoanID, TextView loanName) {
+        Query findNew = loanOfficerRef.orderByKey().equalTo(LoanID);
+        findNew.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot singleSnapshot : snapshot.getChildren()){
+                    LoanOfficerApplications loanoff = singleSnapshot.getValue(LoanOfficerApplications.class);
+                    loanName.setText(loanoff.getUsername());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+
+            }
+        });
     }
 }
