@@ -2,6 +2,7 @@ package com.example.finai;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
 import android.widget.TextView;
@@ -10,6 +11,7 @@ import com.example.finai.objects.User;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -48,7 +50,6 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
-
         // Collecting the currently logged in users details
         Intent getuser = getIntent();
         User cUser = getuser.getParcelableExtra("CurrentUser");
@@ -78,5 +79,9 @@ public class MainActivity extends AppCompatActivity {
                 || super.onSupportNavigateUp();
     }
 
-
+    //method for signing out on the nav bar
+    public void signOut(MenuItem item) {
+        FirebaseAuth.getInstance().signOut();
+        startActivity(new Intent(getApplicationContext() ,FirebaseLogin.class));
+    }
 }

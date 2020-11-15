@@ -215,34 +215,6 @@ public class LoanApplication extends Fragment {
         loanRef.child(loanID).setValue(loan);
     }
 
-    private LoanOfficerApplications updateOpenItems(String loanId, Long loanStatus) {
-        String UID = auth.getUid();
-        Query findNew = loanOfficerRef.orderByKey();
-        findNew.addValueEventListener(new ValueEventListener() {
-
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot child : snapshot.getChildren()) {
-                    LoanOfficerApplications l = child.getValue(LoanOfficerApplications.class);
-                    String parentKey = child.getKey();
-                    assert l != null;
-                    LoanOfficerApplications l2 = new LoanOfficerApplications(parentKey, l.getOpenLoans());
-                    lList.add(l2);
-                    System.out.println(l2.getLoanOfficerID());
-                    System.out.println(l2.getOpenLoans());
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-
-            }
-        });
-        return null;
-    }
-
-
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);

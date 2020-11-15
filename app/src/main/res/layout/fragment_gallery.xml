@@ -11,10 +11,134 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="166dp"
-        android:layout_marginTop="182dp"
+        android:layout_marginTop="612dp"
         android:layout_marginEnd="157dp"
         android:text="@string/sign_out"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Spinner
+        android:id="@+id/genderText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_weight="0.5"
+        android:ems="10"
+        android:entries="@array/gender"
+        android:inputType="textPersonName"
+        app:layout_constraintTop_toBottomOf="@+id/genderLabel"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <TextView
+        android:id="@+id/genderLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:layout_weight="0.5"
+        android:fontFamily="@font/audiowide"
+        android:text="Gender"
+        android:textColor="#070707"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/maritalStatusLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_weight="0.5"
+        android:fontFamily="@font/audiowide"
+        android:text="Marital Status"
+        android:textColor="#070707"
+        android:textSize="24sp"
+        app:layout_constraintTop_toBottomOf="@+id/genderText"
+        tools:layout_editor_absoluteX="-27dp" />
+
+    <Spinner
+        android:id="@+id/marital_Status_Box"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_weight="0.5"
+        android:ems="10"
+        android:entries="@array/marital_status"
+        app:layout_constraintTop_toBottomOf="@+id/maritalStatusLabel"
+        tools:layout_editor_absoluteX="-16dp" />
+
+    <TextView
+        android:id="@+id/dependantsLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_weight="0.5"
+        android:fontFamily="@font/audiowide"
+        android:text="Dependants"
+        android:textColor="#070707"
+        android:textSize="24sp"
+        app:layout_constraintTop_toBottomOf="@+id/marital_Status_Box"
+        tools:layout_editor_absoluteX="-16dp" />
+
+    <Spinner
+        android:id="@+id/dependants_box"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_weight="0.5"
+        android:ems="10"
+        android:entries="@array/dependants"
+        app:layout_constraintTop_toBottomOf="@+id/dependantsLabel"
+        tools:layout_editor_absoluteX="-16dp" />
+
+    <TextView
+        android:id="@+id/employmentStatusLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_weight="0.5"
+        android:fontFamily="@font/audiowide"
+        android:text="Employment Status"
+        android:textColor="#070707"
+        android:textSize="24sp"
+        app:layout_constraintTop_toBottomOf="@+id/dependants_box"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <Spinner
+        android:id="@+id/employmentStatusBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_weight="0.5"
+        android:ems="10"
+        android:entries="@array/employment"
+        app:layout_constraintTop_toBottomOf="@+id/employmentStatusLabel"
+        tools:layout_editor_absoluteX="-35dp" />
+
+    <TextView
+        android:id="@+id/educatedLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_weight="0.5"
+        android:fontFamily="@font/audiowide"
+        android:text="College Eduacated"
+        android:textColor="#070707"
+        android:textSize="24sp"
+        app:layout_constraintTop_toBottomOf="@+id/employmentStatusBox"
+        tools:layout_editor_absoluteX="-79dp" />
+
+    <Spinner
+        android:id="@+id/educated_box"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_weight="0.5"
+        android:ems="10"
+        android:entries="@array/college_education"
+        app:layout_constraintTop_toBottomOf="@+id/educatedLabel"
+        tools:layout_editor_absoluteX="-139dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

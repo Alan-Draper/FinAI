@@ -19,6 +19,9 @@ public class User implements Parcelable {
         setEmail(email);
     }
 
+    public User() {}
+
+
     public String getGender() {
         return gender;
     }

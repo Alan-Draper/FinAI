@@ -12,5 +12,11 @@
             android:id="@+id/nav_gallery"
             android:icon="@drawable/ic_menu_gallery"
             android:title="My Account" />
+
+        <item
+            android:id="@+id/sign_out"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="Sign out"
+            android:onClick="signOut"/>
     </group>
 </menu>
