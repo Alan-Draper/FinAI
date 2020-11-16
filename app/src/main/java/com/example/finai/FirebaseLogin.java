@@ -36,8 +36,7 @@ public class FirebaseLogin extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_firebase_login);
-        usertest = checkExists();
-        System.out.println("test arraylist size = " + usertest.size());
+
         startActivityForResult(
                 // Get an instance of AuthUI based on the default app
                 AuthUI.getInstance().createSignInIntentBuilder().setAvailableProviders(Arrays.asList(
@@ -66,6 +65,8 @@ public class FirebaseLogin extends AppCompatActivity {
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        usertest = checkExists();
+        System.out.println("test arraylist size = " + usertest.size());
         // RC_SIGN_IN is the request code you passed into startActivityForResult(...) when starting the sign in flow.
         if (requestCode == RC_SIGN_IN) {
             IdpResponse response = IdpResponse.fromResultIntent(data);
