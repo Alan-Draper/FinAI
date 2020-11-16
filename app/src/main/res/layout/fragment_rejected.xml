@@ -9,7 +9,7 @@
     tools:context=".ui.approvals.Rejected">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/loanPic"
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_marginTop="150dp"
@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/costLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
@@ -30,7 +30,7 @@
         android:textSize="36sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintTop_toBottomOf="@+id/loanPic" />
 
     <TextView
         android:id="@+id/textView2"
@@ -46,5 +46,5 @@
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/costLabel" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -46,7 +46,6 @@ import static android.content.ContentValues.TAG;
 
 public class LoanApplication extends Fragment {
 
-    private LoanApplicationViewModel mViewModel;
     Interpreter interpreter;
     Button submitLoanApplication;
     Spinner genderBox, maritalStatusBox, dependantsBox, educationBox,employmentBox, locationBox;
@@ -93,7 +92,7 @@ public class LoanApplication extends Fragment {
                 });
 
 
-        lList = populateLoanList();
+        //lList = populateLoanList();
         genderBox = root.findViewById(R.id.genderText);
         maritalStatusBox = root.findViewById(R.id.marital_Status_Box);
         dependantsBox = root.findViewById(R.id.dependants_box);
@@ -213,13 +212,6 @@ public class LoanApplication extends Fragment {
 
         Loan loan = new Loan(loanID,userID,gender,maritalStatus,dependants,education,employment,income,coIncome,loanAmount,loanTerm,creditScore,status, location, loanOfficer);
         loanRef.child(loanID).setValue(loan);
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(LoanApplicationViewModel.class);
-        // TODO: Use the ViewModel
     }
 
 

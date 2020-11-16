@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/frameLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/sunset_suberb_001">
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:id="@+id/linearLayout"
+                android:layout_width="300dp"
+                android:layout_height="1200dp"
+                android:layout_marginTop="200dp"
+                android:layout_marginBottom="200dp"
+                android:background="#99FFFFFF"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/squareFootLivinglabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:fontFamily="@font/audiowide"
+                    android:text="Square Foot Living"
+                    android:textColor="#070707"
+                    android:textSize="24sp" />
+
+                <EditText
+                    android:id="@+id/squareFootLivingText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.25"
+                    android:ems="10"
+                    android:inputType="textPersonName" />
+
+                <TextView
+                    android:id="@+id/latitudeLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:fontFamily="@font/audiowide"
+                    android:text="Latitude"
+                    android:textColor="#070707"
+                    android:textSize="24sp" />
+
+                <EditText
+                    android:id="@+id/latitudeText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.25"
+                    android:ems="10"
+                    android:inputType="textPersonName" />
+
+                <TextView
+                    android:id="@+id/squareFootAboveLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:fontFamily="@font/audiowide"
+                    android:text="Square Foot Above Ground"
+                    android:textColor="#070707"
+                    android:textSize="24sp" />
+
+                <EditText
+                    android:id="@+id/squareFootAboveText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.25"
+                    android:ems="10"
+                    android:inputType="textPersonName" />
+
+                <TextView
+                    android:id="@+id/squareFootBasementLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:fontFamily="@font/audiowide"
+                    android:text="Square foot Basement"
+                    android:textColor="#070707"
+                    android:textSize="24sp" />
+
+                <EditText
+                    android:id="@+id/squareFootBasementText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.25"
+                    android:ems="10"
+                    android:inputType="textPersonName" />
+
+                <TextView
+                    android:id="@+id/waterfrontLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:fontFamily="@font/audiowide"
+                    android:text="Waterfront"
+                    android:textColor="#070707"
+                    android:textSize="24sp" />
+
+                <Spinner
+                    android:id="@+id/waterfront_box"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:ems="10"
+                    android:entries="@array/waterfront" />
+
+
+                <TextView
+                    android:id="@+id/GradeLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:fontFamily="@font/audiowide"
+                    android:text="Grade"
+                    android:textColor="#070707"
+                    android:textSize="24sp" />
+
+                <Spinner
+                    android:id="@+id/grade_box"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:ems="10"
+                    android:entries="@array/grade" />
+
+                <TextView
+                    android:id="@+id/longitudeLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:fontFamily="@font/audiowide"
+                    android:text="Longitude"
+                    android:textColor="#070707"
+                    android:textSize="24sp" />
+
+                <EditText
+                    android:id="@+id/longitudeText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:ems="10"
+                    android:inputType="textPersonName" />
+
+                <TextView
+                    android:id="@+id/viewLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:fontFamily="@font/audiowide"
+                    android:text="View"
+                    android:textColor="#070707"
+                    android:textSize="24sp" />
+
+                <Spinner
+                    android:id="@+id/view_box"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:ems="10"
+                    android:entries="@array/view" />
+
+                <TextView
+                    android:id="@+id/ConditionLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:fontFamily="@font/audiowide"
+                    android:text="Condition"
+                    android:textColor="#070707"
+                    android:textSize="24sp" />
+
+                <Spinner
+                    android:id="@+id/condition_box"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:ems="10"
+                    android:entries="@array/condition" />
+
+                <TextView
+                    android:id="@+id/bedroomsLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:fontFamily="@font/audiowide"
+                    android:text="Bedrooms"
+                    android:textColor="#070707"
+                    android:textSize="24sp" />
+
+                <EditText
+                    android:id="@+id/bedroomsText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:ems="10"
+                    android:inputType="textPersonName" />
+
+                <TextView
+                    android:id="@+id/bathroomsLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:fontFamily="@font/audiowide"
+                    android:text="Bathrooms"
+                    android:textColor="#070707"
+                    android:textSize="24sp" />
+
+                <EditText
+                    android:id="@+id/bathroomsText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:ems="10"
+                    android:inputType="textPersonName" />
+                <TextView
+                    android:id="@+id/yearBuiltLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:fontFamily="@font/audiowide"
+                    android:text="Year Built"
+                    android:textColor="#070707"
+                    android:textSize="24sp" />
+
+                <EditText
+                    android:id="@+id/yearBuiltText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:ems="10"
+                    android:inputType="textPersonName" />
+
+                <TextView
+                    android:id="@+id/floorsLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:fontFamily="@font/audiowide"
+                    android:text="Floors"
+                    android:textColor="#070707"
+                    android:textSize="24sp" />
+
+                <EditText
+                    android:id="@+id/floorsText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:ems="10"
+                    android:inputType="textPersonName" />
+
+                <TextView
+                    android:id="@+id/zipcodeLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:fontFamily="@font/audiowide"
+                    android:text="ZipCode"
+                    android:textColor="#070707"
+                    android:textSize="24sp" />
+
+                <EditText
+                    android:id="@+id/zipcodeText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:ems="10"
+                    android:inputType="textPersonName" />
+
+                <TextView
+                    android:id="@+id/squareFootLiving15Label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:fontFamily="@font/audiowide"
+                    android:text="Square foot living 15"
+                    android:textColor="#070707"
+                    android:textSize="24sp" />
+
+                <EditText
+                    android:id="@+id/squareFootLiving15Text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:ems="10"
+                    android:inputType="textPersonName" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/loanDetails"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="100dp"
+                android:fontFamily="@font/audiowide"
+                android:text="House Price"
+                android:textColor="#050505"
+                android:textSize="30sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/submitHouseEstimation"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="60dp"
+                android:text="Submit"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -18,6 +18,10 @@
             android:id="@+id/action_nav_home_to_currentApplication2"
             app:destination="@id/currentApplication2"
             app:enterAnim="@anim/fui_slide_in_right" />
+        <action
+            android:id="@+id/action_nav_home_to_houseEstimation"
+            app:destination="@id/houseEstimation"
+            app:enterAnim="@anim/fragment_fade_enter" />
     </fragment>
 
     <fragment
@@ -55,4 +59,24 @@
         android:name="com.example.finai.ui.currentApplication.CurrentApplication"
         android:label="fragment_current_application"
         tools:layout="@layout/fragment_current_application" />
+    <fragment
+        android:id="@+id/houseEstimation"
+        android:name="com.example.finai.ui.houseEstimation.HouseEstimation"
+        android:label="fragment_house_prices"
+        tools:layout="@layout/fragment_house_prices" >
+        <action
+            android:id="@+id/action_houseEstimation_to_priceView"
+            app:destination="@id/priceView"
+            app:enterAnim="@anim/fragment_fade_enter" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/priceView"
+        android:name="com.example.finai.ui.houseEstimation.priceView"
+        android:label="priceView" >
+        <action
+            android:id="@+id/action_priceView_to_loanApplication"
+            app:destination="@id/loanApplication"
+            app:enterAnim="@anim/fragment_fade_enter" />
+    </fragment>
 </navigation>

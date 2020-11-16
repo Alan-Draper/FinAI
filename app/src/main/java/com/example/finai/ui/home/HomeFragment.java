@@ -26,6 +26,7 @@ public class HomeFragment extends Fragment {
     private HomeViewModel homeViewModel;
     Button loanButton;
     Button currentApplication;
+    Button housePrice;
     FirebaseAuth auth = FirebaseAuth.getInstance();
 
     DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
@@ -39,9 +40,14 @@ public class HomeFragment extends Fragment {
 
         loanButton = root.findViewById(R.id.applyForLoan);
         currentApplication = root.findViewById(R.id.currentApplication);
+        housePrice = root.findViewById(R.id.houseCostEstimation);
 
         loanButton.setOnClickListener(v-> {
             Navigation.findNavController(root).navigate(R.id.action_nav_home_to_loanApplication);
+        });
+
+        housePrice.setOnClickListener(v-> {
+            Navigation.findNavController(root).navigate(R.id.action_nav_home_to_houseEstimation);
         });
 
         currentApplication.setOnClickListener(v -> {
