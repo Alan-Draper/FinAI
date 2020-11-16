@@ -22,6 +22,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Objects;
 
 public class FirebaseLogin extends AppCompatActivity {
 
@@ -35,8 +36,8 @@ public class FirebaseLogin extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_firebase_login);
 
+        setContentView(R.layout.activity_firebase_login);
         startActivityForResult(
                 // Get an instance of AuthUI based on the default app
                 AuthUI.getInstance().createSignInIntentBuilder().setAvailableProviders(Arrays.asList(
@@ -65,12 +66,13 @@ public class FirebaseLogin extends AppCompatActivity {
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        usertest = checkExists();
-        System.out.println("test arraylist size = " + usertest.size());
         // RC_SIGN_IN is the request code you passed into startActivityForResult(...) when starting the sign in flow.
+        usertest = Objects.requireNonNull(checkExists());
+        System.out.println("test arraylist size = " + usertest.size());
+
         if (requestCode == RC_SIGN_IN) {
             IdpResponse response = IdpResponse.fromResultIntent(data);
-                // Successfully signed in
+            // Successfully signed in
                 if (resultCode == RESULT_OK) {
 
 
@@ -104,7 +106,7 @@ public class FirebaseLogin extends AppCompatActivity {
         String UID = auth.getCurrentUser().getUid();
         System.out.println(UID);
         ArrayList<User> aUser = new ArrayList<>();
-        Query findNew = mRootRef.child("users").child(UID);
+        Query findNew = mRootRef.child("users").child(UID).limitToLast(1);
         findNew.addValueEventListener(new ValueEventListener() {
 
             @Override
