@@ -267,6 +267,7 @@ public class LoanApplication extends Fragment {
                     for (DataSnapshot child : snapshot.getChildren()) {
                         LoanOfficerApplications l = child.getValue(LoanOfficerApplications.class);
                         String parentKey = child.getKey();
+                        System.out.println(l.getUsername());
                         assert l != null;
                         LoanOfficerApplications l2 = new LoanOfficerApplications(parentKey, l.getOpenLoans());
                         lList.add(l2);

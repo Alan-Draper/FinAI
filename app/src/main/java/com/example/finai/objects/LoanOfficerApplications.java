@@ -3,8 +3,6 @@ package com.example.finai.objects;
 public class LoanOfficerApplications {
 
     private String loanOfficerID;
-
-
     private String username;
     private String email;
     private Long openLoans;

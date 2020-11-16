@@ -13,11 +13,23 @@ public class User implements Parcelable {
     private String employmentStatus;
     private String education;
 
+    public User(String username, String email, String gender, String maritalStatus, String dependants, String employmentStatus, String education) {
+
+        setDependants(dependants);
+        setEducation(education);
+        setEmail(email);
+        setEmploymentStatus(employmentStatus);
+        setGender(gender);
+        setMaritalStatus(maritalStatus);
+        setUsername(username);
+    }
 
     public User(String username, String email) {
         setUsername(username);
         setEmail(email);
     }
+
+
 
     public User() {}
 

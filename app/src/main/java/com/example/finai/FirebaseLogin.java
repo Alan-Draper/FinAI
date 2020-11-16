@@ -20,6 +20,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class FirebaseLogin extends AppCompatActivity {
@@ -29,12 +30,14 @@ public class FirebaseLogin extends AppCompatActivity {
     FirebaseAuth auth = FirebaseAuth.getInstance();
     DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
     DatabaseReference userRef = mRootRef.child("users");
-    User u = new User();
+    ArrayList<User> usertest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_firebase_login);
+        usertest = checkExists();
+        System.out.println("test arraylist size = " + usertest.size());
         startActivityForResult(
                 // Get an instance of AuthUI based on the default app
                 AuthUI.getInstance().createSignInIntentBuilder().setAvailableProviders(Arrays.asList(
@@ -55,6 +58,7 @@ public class FirebaseLogin extends AppCompatActivity {
 
     public void showHome(User user) {
         Intent intent = new Intent(this, MainActivity.class);
+        System.out.println(user.getGender());
         intent.putExtra("CurrentUser", user);
         startActivity(intent);
     }
@@ -67,12 +71,14 @@ public class FirebaseLogin extends AppCompatActivity {
             IdpResponse response = IdpResponse.fromResultIntent(data);
                 // Successfully signed in
                 if (resultCode == RESULT_OK) {
-                    u = checkExists();
-                    if(u == null) {
+
+
+                    if(usertest.size()==0) {
                         showHome(this.writeNewUser(auth.getUid(), auth.getCurrentUser().getDisplayName(), auth.getCurrentUser().getEmail()));
                         finish();
                     } else {
-                        showHome(u);
+                        showHome(usertest.get(0));
+                        //finish();
                     }
                 } else {
                     // Sign in failed
@@ -93,25 +99,27 @@ public class FirebaseLogin extends AppCompatActivity {
             }
         }
 
-    private User checkExists() {
-        String UID = auth.getUid();
-        Query findNew = userRef.orderByKey().equalTo(UID);
+    private ArrayList<User> checkExists() {
+        String UID = auth.getCurrentUser().getUid();
+        System.out.println(UID);
+        ArrayList<User> aUser = new ArrayList<>();
+        Query findNew = mRootRef.child("users").child(UID);
         findNew.addValueEventListener(new ValueEventListener() {
 
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot child : snapshot.getChildren()) {
-                    u = child.getValue(User.class);
-
-
-                }
+                User l = snapshot.getValue(User.class);
+                l.getDependants();
+                aUser.add(l);
+                System.out.println(aUser.size());
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
-        });
-        return u;
+
+    });
+        return aUser;
     }
     }
