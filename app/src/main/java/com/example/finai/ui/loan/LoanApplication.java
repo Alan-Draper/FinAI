@@ -92,7 +92,7 @@ public class LoanApplication extends Fragment {
                 });
 
 
-        //lList = populateLoanList();
+        lList = populateLoanList();
         genderBox = root.findViewById(R.id.genderText);
         maritalStatusBox = root.findViewById(R.id.marital_Status_Box);
         dependantsBox = root.findViewById(R.id.dependants_box);
@@ -267,6 +267,7 @@ public class LoanApplication extends Fragment {
                     for (DataSnapshot child : snapshot.getChildren()) {
                         LoanOfficerApplications l = child.getValue(LoanOfficerApplications.class);
                         String parentKey = child.getKey();
+                        assert l != null;
                         LoanOfficerApplications l2 = new LoanOfficerApplications(parentKey, l.getOpenLoans());
                         lList.add(l2);
                         System.out.println(l2.getLoanOfficerID());
