@@ -55,7 +55,7 @@ public class LoanApplication extends Fragment {
 
     DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
     DatabaseReference loanRef = mRootRef.child("LoanApplications");
-    DatabaseReference userRef = mRootRef.child("users");
+    DatabaseReference userRef = mRootRef.child("users").child(auth.getUid());
     DatabaseReference loanOfficerRef = mRootRef.child("loanOfficer");
     ArrayList<LoanOfficerApplications> lList = new ArrayList<>();
 
@@ -212,6 +212,7 @@ public class LoanApplication extends Fragment {
 
         Loan loan = new Loan(loanID,userID,gender,maritalStatus,dependants,education,employment,income,coIncome,loanAmount,loanTerm,creditScore,status, location, loanOfficer);
         loanRef.child(loanID).setValue(loan);
+        userRef.child("loanOfficer").setValue(loanOfficer);
     }
 
 
