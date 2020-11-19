@@ -32,13 +32,12 @@ public class FirebaseLogin extends AppCompatActivity {
     FirebaseAuth auth = FirebaseAuth.getInstance();
     DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
     ArrayList<User> usertest = new ArrayList<>();
-    Boolean checkUser;
+    Boolean checkUser = false;
     User checkedUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        checkExists();
         setContentView(R.layout.activity_firebase_login);
         startActivityForResult(
                 // Get an instance of AuthUI based on the default app
@@ -48,6 +47,7 @@ public class FirebaseLogin extends AppCompatActivity {
                         .setTheme(R.style.LoginTheme)
                         .setIsSmartLockEnabled(false)
                         .setLogo(R.drawable.logo).build(), RC_SIGN_IN);
+        checkExists();
     }
 
 
@@ -60,7 +60,6 @@ public class FirebaseLogin extends AppCompatActivity {
 
     public void showHome(User user) {
         Intent intent = new Intent(this, MainActivity.class);
-        System.out.println(user.getGender());
         intent.putExtra("CurrentUser", user);
         startActivity(intent);
     }
@@ -76,18 +75,15 @@ public class FirebaseLogin extends AppCompatActivity {
             // Successfully signed in
             if (resultCode == RESULT_OK) {
                 System.out.println("test arraylist size = " + usertest.size());
-
                 for (User s : usertest){
-                    if (s.getUsername().equals(auth.getCurrentUser().getDisplayName())) {
+                    if (auth.getCurrentUser().getEmail().equals(s.getEmail())) {
                         checkUser = true;
                         checkedUser = s;
-                    }else {
                     }
                 }
 
-                if (checkUser = false) {
-                    showHome(this.writeNewUser(auth.getUid(), auth.getCurrentUser().getDisplayName(), auth.getCurrentUser().getEmail()));
-                    finish();
+                if (!checkUser) {
+                    showHome(this.writeNewUser(auth.getCurrentUser().getUid(), auth.getCurrentUser().getDisplayName(), auth.getCurrentUser().getEmail()));
                 } else {
                     showHome(checkedUser);
                     //finish();
