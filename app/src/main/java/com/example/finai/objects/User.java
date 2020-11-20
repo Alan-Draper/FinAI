@@ -5,6 +5,7 @@ import android.os.Parcelable;
 
 public class User implements Parcelable {
 
+    private String uid;
     private String username;
     private String email;
     private String gender;
@@ -13,8 +14,8 @@ public class User implements Parcelable {
     private String employmentStatus;
     private String education;
 
-    public User(String username, String email, String gender, String maritalStatus, String dependants, String employmentStatus, String education) {
-
+    public User(String uid, String username, String email, String gender, String maritalStatus, String dependants, String employmentStatus, String education) {
+        setUid(uid);
         setDependants(dependants);
         setEducation(education);
         setEmail(email);
@@ -24,7 +25,8 @@ public class User implements Parcelable {
         setUsername(username);
     }
 
-    public User(String username, String email) {
+    public User(String uid, String username, String email) {
+        setUid(uid);
         setUsername(username);
         setEmail(email);
     }
@@ -33,6 +35,13 @@ public class User implements Parcelable {
 
     public User() {}
 
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
 
     public String getGender() {
         return gender;
