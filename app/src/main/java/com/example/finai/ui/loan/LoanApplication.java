@@ -45,7 +45,7 @@ import java.util.ArrayList;
 import static android.content.ContentValues.TAG;
 
 public class LoanApplication extends Fragment {
-
+    //interpreter for using the algorithm
     Interpreter interpreter;
     Button submitLoanApplication;
     Spinner genderBox, maritalStatusBox, dependantsBox, educationBox,employmentBox, locationBox;
@@ -71,7 +71,7 @@ public class LoanApplication extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.loan_application_fragment, container, false);
-
+        //grabs the model from firebase
         FirebaseCustomRemoteModel remoteModel =
                 new FirebaseCustomRemoteModel.Builder("LoanTest").build();
         FirebaseModelDownloadConditions conditions = new FirebaseModelDownloadConditions.Builder()
@@ -91,7 +91,7 @@ public class LoanApplication extends Fragment {
                     }
                 });
 
-
+        //assigning variables to all objects on the view
         lList = populateLoanList();
         genderBox = root.findViewById(R.id.genderText);
         maritalStatusBox = root.findViewById(R.id.marital_Status_Box);
@@ -107,6 +107,8 @@ public class LoanApplication extends Fragment {
 
         submitLoanApplication = root.findViewById(R.id.submitLoan);
 
+        //ensuring that all variables suit the input needed for the algorithm
+        //needs to be clearer for end user in next version
         submitLoanApplication.setOnClickListener(v -> {
             if (genderBox.getSelectedItem().toString().equals("Male")) {
                 gender = "1";
@@ -141,6 +143,7 @@ public class LoanApplication extends Fragment {
             coIncome = coIncomeBox.getText().toString();
             loanAmount = loanAmountBox.getText().toString();
             loanTerm = loanTermBox.getText().toString();
+            //availability of a loan in seattle is not possible with a credit score of under 620
             int creditscoreValue = Integer.parseInt(creditScoreBox.getText().toString());
             if (creditscoreValue >= 620) {
                 creditScore = "1";
@@ -155,6 +158,13 @@ public class LoanApplication extends Fragment {
             } else {
                 location = "1";
             }
+            /*creating a bytebuffer for the data in and out of the interpreter
+            //data shape as follows
+            /*1 input(s):
+                [ 1 11] <class 'numpy.float32'>
+
+              1 output(s):
+                [1 1] <class 'numpy.float32'> */
 
             ByteBuffer data = ByteBuffer.allocateDirect(44).order(ByteOrder.nativeOrder());
             int bufferSize = 1000 * Float.SIZE / Byte.SIZE;
@@ -175,13 +185,10 @@ public class LoanApplication extends Fragment {
             dataout.rewind();
             FloatBuffer probabilities = dataout.asFloatBuffer();
             float probability = probabilities.get();
-            Log.i(TAG, String.format("%s: %1.4f", "probability", probability));
-
-        System.out.println(probability);
-            // startint to check count on loan officer to assign to loans
-
-
+        //using the probability from the interpreter to push the loan application with the status to the database
         if (probability <= 0.55) {
+            //if less then 0.55 probability of loan then it is automatically rejected
+            //current acuarracy of loan model is 72 percent, will be imroved in later version
             loanStatus = "Rejected";
             writeNewLoan(loanRef.push().getKey(), auth.getUid(), genderBox.getSelectedItem().toString(),
                     maritalStatusBox.getSelectedItem().toString(),
@@ -209,7 +216,7 @@ public class LoanApplication extends Fragment {
     }
 
     private void writeNewLoan(String loanID, String userID, String gender, String maritalStatus, String dependants, String education, String employment, String income, String coIncome, String loanAmount, String loanTerm, String creditScore, String status, String location, String loanOfficer) {
-
+        //writes loan to database and adds loan officer to users record
         Loan loan = new Loan(loanID,userID,gender,maritalStatus,dependants,education,employment,income,coIncome,loanAmount,loanTerm,creditScore,status, location, loanOfficer);
         loanRef.child(loanID).setValue(loan);
         userRef.child("loanOfficer").setValue(loanOfficer);
@@ -218,15 +225,17 @@ public class LoanApplication extends Fragment {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public String findLoanOfficer() {
+        /*method to find the loan officer and assign it to the loan
+        there is an openLoans record for each loan officer
+        this method finds the loan officer with the fewest open loans and assigns the loan to the officer
+         */
 
         ArrayList<LoanOfficerApplications> numApps = new ArrayList<>();
         LoanOfficerApplications lowest = new LoanOfficerApplications();
         int smallest = 170000000;
         int countSmallest = 0;
-        System.out.println(lList.size() + " 261");
         for (LoanOfficerApplications i : lList) {
             if (i.getOpenLoans() < smallest) {
-                System.out.println(i.getOpenLoans());
                 smallest = Math.toIntExact(i.getOpenLoans());
                 lowest = new LoanOfficerApplications(i.getLoanOfficerID(),i.getOpenLoans());
                 countSmallest = 0;
@@ -237,12 +246,12 @@ public class LoanApplication extends Fragment {
                 numApps.add(i);
             }
         }
+        //if there is more then one loan officer with the same amount of openloans then it assigns it to one of them randomly
         if (countSmallest > 0) {
             int num = (int) (Math.random() * numApps.size());
             DatabaseReference openItems = FirebaseDatabase.getInstance().getReference("loanOfficer").child(numApps.get(num).getLoanOfficerID());
             int openItemsInt = Math.toIntExact(numApps.get(num).getOpenLoans());
             openItemsInt = openItemsInt+1;
-            System.out.println(openItemsInt + " line280");
             openItems.child("openLoans").setValue(openItemsInt);
             return numApps.get(num).getLoanOfficerID();
         } else {
@@ -251,14 +260,13 @@ public class LoanApplication extends Fragment {
             DatabaseReference openItems = FirebaseDatabase.getInstance().getReference("loanOfficer").child(lowest.getLoanOfficerID());
             int openItemsInt = Math.toIntExact(lowest.getOpenLoans());
             openItemsInt = openItemsInt+1;
-            System.out.println(openItemsInt + " line286");
             openItems.child("openLoans").setValue(openItemsInt);
-            System.out.println(loanOfficerID);
             return loanOfficerID;
         }
     }
 
         public ArrayList<LoanOfficerApplications> populateLoanList () {
+            //returns a list of loan officers from the database to get their open loans
             String UID = auth.getUid();
             Query findNew = loanOfficerRef.orderByKey();
             findNew.addValueEventListener(new ValueEventListener() {
@@ -268,12 +276,9 @@ public class LoanApplication extends Fragment {
                     for (DataSnapshot child : snapshot.getChildren()) {
                         LoanOfficerApplications l = child.getValue(LoanOfficerApplications.class);
                         String parentKey = child.getKey();
-                        System.out.println(l.getUsername());
                         assert l != null;
                         LoanOfficerApplications l2 = new LoanOfficerApplications(parentKey, l.getOpenLoans());
                         lList.add(l2);
-                        System.out.println(l2.getLoanOfficerID());
-                        System.out.println(l2.getOpenLoans());
                     }
                 }
 

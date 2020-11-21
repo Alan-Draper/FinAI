@@ -89,6 +89,7 @@
     <string name="apply_for_a_loan">Apply For A Loan</string>
     <string name="house_cost_estimation">House Cost Estimation</string>
     <string name="sign_out">Sign Out</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="rate_us">Rate Us</string>
+    <string name="submit">Submit</string>
+    <string name="rate_the_app">Rate the app</string>
 </resources>

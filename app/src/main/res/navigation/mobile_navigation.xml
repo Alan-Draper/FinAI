@@ -22,6 +22,10 @@
             android:id="@+id/action_nav_home_to_houseEstimation"
             app:destination="@id/houseEstimation"
             app:enterAnim="@anim/fragment_fade_enter" />
+        <action
+            android:id="@+id/action_nav_home_to_appRating"
+            app:destination="@id/ratingFragment"
+            app:enterAnim="@anim/fragment_fade_enter" />
     </fragment>
 
     <fragment
@@ -79,4 +83,8 @@
             app:destination="@id/loanApplication"
             app:enterAnim="@anim/fragment_fade_enter" />
     </fragment>
+    <fragment
+        android:id="@+id/ratingFragment"
+        android:name="com.example.finai.ui.appRating.RatingFragment"
+        android:label="RatingFragment" />
 </navigation>

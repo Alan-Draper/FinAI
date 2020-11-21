@@ -47,11 +47,13 @@ public class FirebaseLogin extends AppCompatActivity {
                         .setTheme(R.style.LoginTheme)
                         .setIsSmartLockEnabled(false)
                         .setLogo(R.drawable.logo).build(), RC_SIGN_IN);
+        //checking the users in the database and adding them to arraylist on creation of new sign in request
         checkExists();
     }
 
 
     private User writeNewUser(String userId, String name, String email) {
+        //creates new user and adds them to database
         User user = new User(userId, name, email);
         mRootRef.child("users").child(userId).setValue(user);
         return user;
@@ -59,6 +61,7 @@ public class FirebaseLogin extends AppCompatActivity {
 
 
     public void showHome(User user) {
+        //passes the current user through to the main navigation window
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra("CurrentUser", user);
         startActivity(intent);
@@ -74,19 +77,18 @@ public class FirebaseLogin extends AppCompatActivity {
             IdpResponse response = IdpResponse.fromResultIntent(data);
             // Successfully signed in
             if (resultCode == RESULT_OK) {
-                System.out.println("test arraylist size = " + usertest.size());
+                //checks through the arraylist of users to see if the new user exists in the database already
                 for (User s : usertest){
                     if (auth.getCurrentUser().getEmail().equals(s.getEmail())) {
                         checkUser = true;
                         checkedUser = s;
                     }
                 }
-
+                //if user doesnt exist it creates a new user and passes the object to main activity
                 if (!checkUser) {
                     showHome(this.writeNewUser(auth.getCurrentUser().getUid(), auth.getCurrentUser().getDisplayName(), auth.getCurrentUser().getEmail()));
                 } else {
                     showHome(checkedUser);
-                    //finish();
                 }
             } else {
                 // Sign in failed
@@ -108,14 +110,15 @@ public class FirebaseLogin extends AppCompatActivity {
     }
 
     public void checkExists() {
+        //Query gets all users and orders by username
         Query findNew = mRootRef.child("users").orderByChild("username");
         findNew.addValueEventListener(new ValueEventListener() {
 
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for(DataSnapshot snap : snapshot.getChildren()) {
+                    //for each object in the query, it creates a new user and adds the user to the arraylist
                     User l = snap.getValue(User.class);
-                    System.out.println(l);
                     usertest.add(l);
                 }
             }

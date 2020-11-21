@@ -34,10 +34,24 @@
         android:id="@+id/applyForLoan"
         android:layout_width="@dimen/button_width"
         android:layout_height="@dimen/button_height"
-        android:layout_marginTop="200dp"
+        android:layout_marginTop="150dp"
         android:background="#BFFFFFFF"
         android:text="@string/apply_for_a_loan"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/appRatingButton"
+        android:layout_width="@dimen/button_width"
+        android:layout_height="@dimen/button_height"
+        android:layout_marginTop="56dp"
+        android:background="#BFFFFFFF"
+        android:text="@string/rate_the_app"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/houseCostEstimation"
+        app:layout_constraintVertical_bias="0.0" />
 </androidx.constraintlayout.widget.ConstraintLayout>
