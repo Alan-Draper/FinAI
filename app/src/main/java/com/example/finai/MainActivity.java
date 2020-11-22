@@ -1,6 +1,7 @@
 package com.example.finai;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -44,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_gallery, R.id.loanApplication, R.id.houseEstimation)
+                R.id.nav_home, R.id.my_account, R.id.loanApplication, R.id.houseEstimation)
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
@@ -85,4 +86,19 @@ public class MainActivity extends AppCompatActivity {
         FirebaseAuth.getInstance().signOut();
         startActivity(new Intent(getApplicationContext() ,FirebaseLogin.class));
     }
+
+    public void ringFinAI(MenuItem item) {
+        Intent dial = new Intent();
+        dial.setAction("android.intent.action.DIAL");
+        dial.setData(Uri.parse("tel:00000000000"));
+        startActivity(dial);
+    }
+
+    public void emailFinai(MenuItem item) {
+        String mailTo="finai@finai.com";
+        Intent email_intent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto",mailTo, null));
+        email_intent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Subject text here");
+        email_intent.putExtra(android.content.Intent.EXTRA_TEXT,"Body text here");
+        startActivity(Intent.createChooser(email_intent, "Choose an Email client :"));
+        }
 }

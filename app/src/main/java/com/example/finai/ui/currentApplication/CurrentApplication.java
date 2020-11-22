@@ -27,6 +27,10 @@ import com.google.firebase.database.ValueEventListener;
 
 public class CurrentApplication extends Fragment {
 
+    /*class to  show information on the current users most recent loan application
+    searches the database for latest loan and allows the user to see and call their loan officer
+     */
+
     FirebaseAuth auth = FirebaseAuth.getInstance();
     DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
     DatabaseReference loanOfficerRef = mRootRef.child("loanOfficer");
@@ -38,6 +42,7 @@ public class CurrentApplication extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_current_application, container, false);
+
         lOfficer = root.findViewById(R.id.loanOfficerText);
         loanAmount = root.findViewById(R.id.CurrentloanAmountText);
         loanTerm = root.findViewById(R.id.CurrentloanTermText);
@@ -46,13 +51,19 @@ public class CurrentApplication extends Fragment {
         currentStatus = root.findViewById(R.id.CurrentStatus);
         phone = root.findViewById(R.id.phoneCallImage);
         String UID = auth.getUid();
+
+        //query for grabbing the most recent loan application for the user
         Query findNew = mRootRef.child("LoanApplications").orderByChild("userID").equalTo(UID).limitToLast(1);
             findNew.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     for(DataSnapshot singleSnapshot : snapshot.getChildren()){
                         Loan loan = singleSnapshot.getValue(Loan.class);
+                        //using the loan from this query it finds the information on the loan
+                        //officer and fills the field
                         findLoanOfficerName(loan.getLoanOfficer(),lOfficer, phone);
+                        //assigns loan details and changes the picture depending on status
+                        //need to add approved label along with paypal window
                         loanAmount.setText(loan.getLoanAmount());
                         loanTerm.setText(loan.getLoanTerm());;
                         if(loan.getLoanStatus().equals("Pre Approved")) {
@@ -76,16 +87,19 @@ public class CurrentApplication extends Fragment {
         return root;
 
     }
-
+    //assigns values to the fields on the view based on the loan officer
     public void findLoanOfficerName(String LoanID, TextView loanName, ImageView phone) {
+
         Query findNew = loanOfficerRef.orderByKey().equalTo(LoanID);
         findNew.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for(DataSnapshot singleSnapshot : snapshot.getChildren()){
+                    //gets a loan officer and sets the name and phone number
                     LoanOfficerApplications loanoff = singleSnapshot.getValue(LoanOfficerApplications.class);
                     loanName.setText(loanoff.getUsername());
                     phone.setOnClickListener(v -> {
+                        //intent to allow the user to call their loan officers
                         Intent dial = new Intent();
                         dial.setAction("android.intent.action.DIAL");
                         dial.setData(Uri.parse("tel:"+loanoff.getPhoneNumber()));

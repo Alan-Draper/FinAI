@@ -3,9 +3,13 @@ package com.example.finai.objects;
 
 public class HousePrice {
 
+    //object for House Prices, used to read and write from the database
+
     private String houseEstimationId, userId, sqFtLiving, latitude, sqFtAbove, sqFtBasement, longitude, bedrooms, bathrooms, yearBuilt, floors, zipcode, sqFtLiving15, waterfront, grade, view, condition, price;
 
+    //empty constructor needed for reading from database
     public HousePrice(){}
+
     public HousePrice(String houseEstimationId, String userId, String sqFtLiving, String latitude, String sqFtAbove, String sqFtBasement, String waterfront, String grade, String longitude, String view, String condition, String bedrooms, String bathrooms, String yearBuilt, String floors, String zipcode, String sqFtLiving15, String price) {
         this.houseEstimationId = houseEstimationId;
         this.userId = userId;

@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import com.example.finai.R;
 
 public class Rejected extends Fragment {
-
+    //class for showing successful applications
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

@@ -9,7 +9,7 @@
             android:icon="@drawable/ic_menu_camera"
             android:title="@string/menu_home" />
         <item
-            android:id="@+id/nav_gallery"
+            android:id="@+id/my_account"
             android:icon="@drawable/ic_menu_gallery"
             android:title="My Account" />
 
@@ -18,5 +18,15 @@
             android:icon="@drawable/ic_menu_gallery"
             android:title="Sign out"
             android:onClick="signOut"/>
+        <item
+            android:id="@+id/phone_us"
+            android:icon="@drawable/fui_ic_phone_white_24dp"
+            android:onClick="ringFinAI"
+            android:title="Phone Us" />
+        <item
+            android:id="@+id/email_us"
+            android:icon="@drawable/fui_ic_mail_white_24dp"
+            android:onClick="emailFinai"
+            android:title="Email Us" />
     </group>
 </menu>

@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import com.example.finai.R;
 
 public class Approved extends Fragment {
-
+    //class for showing successful applications
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment

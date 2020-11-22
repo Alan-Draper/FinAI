@@ -2,11 +2,15 @@ package com.example.finai.objects;
 
 public class LoanOfficerApplications {
 
+    //object for Loan Officers, used to read and write from the database
+
     private String loanOfficerID;
     private String username;
     private String email;
     private Long openLoans;
     private String phoneNumber;
+
+    //empty constructor needed for reading from database
 
     public LoanOfficerApplications() {}
 

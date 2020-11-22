@@ -2,6 +2,8 @@ package com.example.finai.objects;
 
 public class Loan {
 
+    //object for Loans, used to read and write from the database
+
     private String loanID;
     private String userID;
     private String gender;
@@ -18,6 +20,7 @@ public class Loan {
     private String loanStatus;
     private String loanOfficer;
 
+    //empty constructor needed for reading from database
     public Loan(){
 
     }

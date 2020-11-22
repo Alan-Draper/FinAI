@@ -29,8 +29,8 @@
     </fragment>
 
     <fragment
-        android:id="@+id/nav_gallery"
-        android:name="com.example.finai.ui.gallery.GalleryFragment"
+        android:id="@+id/my_account"
+        android:name="com.example.finai.ui.accountDetails.accountDetailsFragment"
         android:label="@string/menu_gallery"
         tools:layout="@layout/fragment_gallery" />
 

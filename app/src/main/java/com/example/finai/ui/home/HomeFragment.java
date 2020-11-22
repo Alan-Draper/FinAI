@@ -22,8 +22,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 public class HomeFragment extends Fragment {
-
-    private HomeViewModel homeViewModel;
+    //top level of the navigation, allows users to branch off beween house prices loan applications and their current application
     Button loanButton;
     Button currentApplication;
     Button housePrice;
@@ -34,8 +33,6 @@ public class HomeFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        homeViewModel =
-                ViewModelProviders.of(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
 
 

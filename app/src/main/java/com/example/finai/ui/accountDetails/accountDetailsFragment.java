@@ -1,7 +1,6 @@
-package com.example.finai.ui.gallery;
+package com.example.finai.ui.accountDetails;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,21 +11,15 @@ import android.widget.Spinner;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.example.finai.FirebaseLogin;
 import com.example.finai.R;
-import com.example.finai.objects.LoanOfficerApplications;
 import com.example.finai.objects.User;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class GalleryFragment extends Fragment {
+public class accountDetailsFragment extends Fragment {
 
     FirebaseAuth auth = FirebaseAuth.getInstance();
     DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
@@ -34,8 +27,6 @@ public class GalleryFragment extends Fragment {
     DatabaseReference cUser = userRef.child(auth.getUid());
     ArrayList<User> ul = new ArrayList<>();
 
-
-    private GalleryViewModel galleryViewModel;
     Button updateUser;
     Spinner genderBox, maritalStatusBox, dependantsBox, educationBox, employmentBox;
 
@@ -52,7 +43,7 @@ public class GalleryFragment extends Fragment {
        // User u = getUser();
         //System.out.println(u.getGender());
         //genderBox.setSelection(checkStrings(getString("gender"), getResources().getStringArray(R.array.gender)));
-
+        //updates user in database
         updateUser.setOnClickListener(v-> {
                 cUser.child("gender").setValue(genderBox.getSelectedItem().toString());
                 cUser.child("maritalStatus").setValue(maritalStatusBox.getSelectedItem().toString());
@@ -67,19 +58,7 @@ public class GalleryFragment extends Fragment {
 
     }
 
-    public int checkStrings(String string, String[] strings) {
-        int count=0;
-        int position = 0;
-        for(String s: strings) {
-            if(s.equals(string)){
-                position = count;
-            } else{
-                count++;
-            }
-        }
-        return position;
-    }
-/*not working
+/*not working, for next sprint will add the fields being filled with current values from database on create
     public User getUser() {
         Query findNew = cUser;
         findNew.addValueEventListener(new ValueEventListener() {

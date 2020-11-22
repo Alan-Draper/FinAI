@@ -5,6 +5,8 @@ import android.os.Parcelable;
 
 public class User implements Parcelable {
 
+    //Parcelable object for Users, used to read and write from the database, and pass Current user between classes
+
     private String uid;
     private String username;
     private String email;
