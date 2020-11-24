@@ -24,6 +24,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.paypal.android.sdk.payments.PayPalConfiguration;
+import com.paypal.android.sdk.payments.PayPalPayment;
+import com.paypal.android.sdk.payments.PayPalService;
+import com.paypal.android.sdk.payments.PaymentActivity;
+
+import java.math.BigDecimal;
 
 public class CurrentApplication extends Fragment {
 
@@ -72,6 +78,11 @@ public class CurrentApplication extends Fragment {
                         } else if(loan.getLoanStatus().equals("Rejected")) {
                             currentStatus.setText(loan.getLoanStatus());
                             status.setImageResource(R.drawable.cancel);
+                        } else {
+                            currentStatus.setText(loan.getLoanStatus());
+                            status.setImageResource(R.drawable.success);
+                            paypal.setVisibility(View.VISIBLE);
+
                         }
 
                     }
@@ -83,6 +94,14 @@ public class CurrentApplication extends Fragment {
 
                 }
             });
+
+
+        paypal.setOnClickListener(new View.OnClickListener() {
+                                      @Override
+                                      public void onClick(View v) {
+                                          beginPayment(v);
+                                      }
+        });
 
         return root;
 
@@ -115,5 +134,21 @@ public class CurrentApplication extends Fragment {
 
             }
         });
+    }
+
+    private static PayPalConfiguration config = new PayPalConfiguration()
+            .environment(PayPalConfiguration.ENVIRONMENT_SANDBOX)
+            .clientId("AX156NMaNUIRpSvTW-AhZdtplykXVvCpelVP53rSTlkKnvsLMyoghDgraXUDgOJhLs7FH36olQXSLUEs");
+
+    public void beginPayment(View view){
+        Intent serviceConfig = new Intent(getContext(), PayPalService.class);
+        serviceConfig.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config);
+
+        PayPalPayment payment = new PayPalPayment(new BigDecimal("300"), "USD", "Payment to Agent", PayPalPayment.PAYMENT_INTENT_SALE);
+
+        Intent paymentConfig = new Intent(getContext(), PaymentActivity.class);
+        paymentConfig.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config); //send the same configuration for restart resiliency
+        paymentConfig.putExtra(PaymentActivity.EXTRA_PAYMENT, payment);
+        startActivityForResult(paymentConfig, 0);
     }
 }
