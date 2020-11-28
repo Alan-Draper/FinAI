@@ -6,12 +6,13 @@ import android.os.Parcelable;
 public class User implements Parcelable {
 
     //Parcelable object for Users, used to read and write from the database, and pass Current user between classes
-
+    private Long appRating;
     private String uid;
     private String username;
     private String email;
     private String gender;
     private String maritalStatus;
+    private String loanOfficer;
     private String dependants;
     private String employmentStatus;
     private String education;
@@ -31,6 +32,7 @@ public class User implements Parcelable {
         setUid(uid);
         setUsername(username);
         setEmail(email);
+        this.loanOfficer = "none";
     }
 
 
@@ -83,6 +85,22 @@ public class User implements Parcelable {
 
     public void setEducation(String education) {
         this.education = education;
+    }
+
+    public String getLoanOfficer() {
+        return loanOfficer;
+    }
+
+    public void setLoanOfficer(String loanOfficer) {
+        this.loanOfficer = loanOfficer;
+    }
+
+    public Long getAppRating() {
+        return appRating;
+    }
+
+    public void setAppRating(Long appRating) {
+        this.appRating = appRating;
     }
 
     protected User(Parcel in) {

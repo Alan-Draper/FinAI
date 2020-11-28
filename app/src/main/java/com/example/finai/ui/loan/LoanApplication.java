@@ -1,7 +1,6 @@
 package com.example.finai.ui.loan;
 
 import androidx.annotation.RequiresApi;
-import androidx.lifecycle.ViewModelProviders;
 
 import android.os.Build;
 import android.os.Bundle;
@@ -11,7 +10,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +20,7 @@ import android.widget.TextView;
 import com.example.finai.objects.Loan;
 import com.example.finai.R;
 import com.example.finai.objects.LoanOfficerApplications;
+import com.example.finai.objects.User;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -42,8 +41,6 @@ import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 
-import static android.content.ContentValues.TAG;
-
 public class LoanApplication extends Fragment {
     //interpreter for using the algorithm
     Interpreter interpreter;
@@ -55,9 +52,10 @@ public class LoanApplication extends Fragment {
 
     DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
     DatabaseReference loanRef = mRootRef.child("LoanApplications");
-    DatabaseReference userRef = mRootRef.child("users").child(auth.getUid());
+    DatabaseReference userRef = mRootRef.child("users");
     DatabaseReference loanOfficerRef = mRootRef.child("loanOfficer");
     ArrayList<LoanOfficerApplications> lList = new ArrayList<>();
+    ArrayList<User> cUser = new ArrayList<>();
 
 
 
@@ -104,12 +102,13 @@ public class LoanApplication extends Fragment {
         loanTermBox = root.findViewById(R.id.loanTermText);
         creditScoreBox = root.findViewById(R.id.creditScoreText);
         locationBox = root.findViewById(R.id.location_box);
-
         submitLoanApplication = root.findViewById(R.id.submitLoan);
+        cUser = getCurrentUser();
 
         //ensuring that all variables suit the input needed for the algorithm
         //needs to be clearer for end user in next version
         submitLoanApplication.setOnClickListener(v -> {
+
             if (genderBox.getSelectedItem().toString().equals("Male")) {
                 gender = "1";
             } else {
@@ -185,9 +184,10 @@ public class LoanApplication extends Fragment {
             dataout.rewind();
             FloatBuffer probabilities = dataout.asFloatBuffer();
             float probability = probabilities.get();
+
         //using the probability from the interpreter to push the loan application with the status to the database
-        if (probability <= 0.55) {
-            //if less then 0.55 probability of loan then it is automatically rejected
+        if (probability <= 0.5) {
+            //if less then 0.5 probability of loan then it is automatically rejected
             //current acuarracy of loan model is 72 percent, will be imroved in later version
             loanStatus = "Rejected";
             writeNewLoan(loanRef.push().getKey(), auth.getUid(), genderBox.getSelectedItem().toString(),
@@ -199,16 +199,29 @@ public class LoanApplication extends Fragment {
             Navigation.findNavController(root).navigate(R.id.action_loanApplication_to_rejected);
         } else {
             loanStatus = "Pre Approved";
-            String loanOfficer = findLoanOfficer();
-            writeNewLoan(loanRef.push().getKey(), auth.getUid(), genderBox.getSelectedItem().toString(),
-                    maritalStatusBox.getSelectedItem().toString(),
-                    dependantsBox.getSelectedItem().toString(),
-                    employmentBox.getSelectedItem().toString(),
-                    educationBox.getSelectedItem().toString(),
-                    income,coIncome,loanAmount,loanTerm,creditScore, loanStatus, locationBox.getSelectedItem().toString(), loanOfficer);
-            System.out.println(loanOfficer);
-            Navigation.findNavController(root).navigate(R.id.action_loanApplication_to_approved);
 
+            System.out.println(cUser.size());
+            if(cUser.get(0).getLoanOfficer().equals("none")) {
+                String loanOfficer = findLoanOfficer();
+                writeNewLoan(loanRef.push().getKey(), auth.getUid(), genderBox.getSelectedItem().toString(),
+                        maritalStatusBox.getSelectedItem().toString(),
+                        dependantsBox.getSelectedItem().toString(),
+                        employmentBox.getSelectedItem().toString(),
+                        educationBox.getSelectedItem().toString(),
+                        income, coIncome, loanAmount, loanTerm, creditScore, loanStatus, locationBox.getSelectedItem().toString(), loanOfficer);
+                System.out.println(loanOfficer);
+                Navigation.findNavController(root).navigate(R.id.action_loanApplication_to_approved);
+            } else {
+                writeNewLoan(loanRef.push().getKey(), auth.getUid(), genderBox.getSelectedItem().toString(),
+                        maritalStatusBox.getSelectedItem().toString(),
+                        dependantsBox.getSelectedItem().toString(),
+                        employmentBox.getSelectedItem().toString(),
+                        educationBox.getSelectedItem().toString(),
+                        income, coIncome, loanAmount, loanTerm, creditScore, loanStatus, locationBox.getSelectedItem().toString(), cUser.get(0).getLoanOfficer());
+                getUserLoanOfficer(cUser.get(0));
+                System.out.println(cUser.get(0).getLoanOfficer());
+                Navigation.findNavController(root).navigate(R.id.action_loanApplication_to_approved);
+            }
         }
         });
 
@@ -219,7 +232,7 @@ public class LoanApplication extends Fragment {
         //writes loan to database and adds loan officer to users record
         Loan loan = new Loan(loanID,userID,gender,maritalStatus,dependants,education,employment,income,coIncome,loanAmount,loanTerm,creditScore,status, location, loanOfficer);
         loanRef.child(loanID).setValue(loan);
-        userRef.child("loanOfficer").setValue(loanOfficer);
+        userRef.child(auth.getCurrentUser().getUid()).child("loanOfficer").setValue(loanOfficer);
     }
 
 
@@ -291,5 +304,49 @@ public class LoanApplication extends Fragment {
 
             return lList;
         }
+
+        public ArrayList<User> getCurrentUser() {
+            String UID = auth.getCurrentUser().getUid();
+            Query findNew = userRef.child(UID);
+            findNew.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                        User l = snapshot.getValue(User.class);
+                        System.out.println(l.getEmail());
+                        cUser.add(l);
+                        }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+            return cUser;
+        }
+
+    public void getUserLoanOfficer(User user) {
+        DatabaseReference currentLoanOfficer = FirebaseDatabase.getInstance().getReference("loanOfficer").child(user.getLoanOfficer());
+        String loanOfficerID = user.getLoanOfficer();
+        Query findNew = loanOfficerRef.child(loanOfficerID);
+        findNew.addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    System.out.println("334");
+                    LoanOfficerApplications l = snapshot.getValue(LoanOfficerApplications.class);
+                    int openLoans = Math.toIntExact(l.getOpenLoans());
+                    openLoans = openLoans+1;
+                    currentLoanOfficer.child("openLoans").setValue(openLoans);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+
+            }
+        });
+    }
 
 }
