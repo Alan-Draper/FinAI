@@ -184,6 +184,7 @@ public class LoanApplication extends Fragment {
             dataout.rewind();
             FloatBuffer probabilities = dataout.asFloatBuffer();
             float probability = probabilities.get();
+            System.out.println(probability);
 
         //using the probability from the interpreter to push the loan application with the status to the database
         if (probability <= 0.5) {
@@ -195,11 +196,11 @@ public class LoanApplication extends Fragment {
                     dependantsBox.getSelectedItem().toString(),
                     employmentBox.getSelectedItem().toString(),
                     educationBox.getSelectedItem().toString(),
-                    income,coIncome,loanAmount,loanTerm,creditScore, loanStatus, locationBox.getSelectedItem().toString(), " ");
+                    income,coIncome,loanAmount,loanTerm,creditScore, loanStatus, locationBox.getSelectedItem().toString(), cUser.get(0).getLoanOfficer());
             Navigation.findNavController(root).navigate(R.id.action_loanApplication_to_rejected);
         } else {
             loanStatus = "Pre Approved";
-
+            //assigns a new loan officer using the random function below or assigns the same loan officer if a previous application exists
             System.out.println(cUser.size());
             if(cUser.get(0).getLoanOfficer().equals("none")) {
                 String loanOfficer = findLoanOfficer();
@@ -333,7 +334,6 @@ public class LoanApplication extends Fragment {
 
             @RequiresApi(api = Build.VERSION_CODES.N)
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    System.out.println("334");
                     LoanOfficerApplications l = snapshot.getValue(LoanOfficerApplications.class);
                     int openLoans = Math.toIntExact(l.getOpenLoans());
                     openLoans = openLoans+1;

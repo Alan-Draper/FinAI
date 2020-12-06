@@ -11,8 +11,10 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -47,7 +49,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.25"
                     android:ems="10"
-                    android:inputType="textPersonName" />
+                    android:inputType="number" />
 
                 <TextView
                     android:id="@+id/latitudeLabel"
@@ -65,7 +67,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.25"
                     android:ems="10"
-                    android:inputType="textPersonName" />
+                    android:hint="Between 47.1555 and 47.7780"
+                    android:inputType="numberDecimal" />
 
                 <TextView
                     android:id="@+id/squareFootAboveLabel"
@@ -83,7 +86,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.25"
                     android:ems="10"
-                    android:inputType="textPersonName" />
+                    android:inputType="number" />
 
                 <TextView
                     android:id="@+id/squareFootBasementLabel"
@@ -101,7 +104,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.25"
                     android:ems="10"
-                    android:inputType="textPersonName" />
+                    android:inputType="number" />
 
                 <TextView
                     android:id="@+id/waterfrontLabel"
@@ -156,7 +159,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
                     android:ems="10"
-                    android:inputType="textPersonName" />
+                    android:hint="Between -121.315 and -122.515"
+                    android:inputType="numberSigned|numberDecimal" />
 
                 <TextView
                     android:id="@+id/viewLabel"
@@ -210,7 +214,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
                     android:ems="10"
-                    android:inputType="textPersonName" />
+                    android:inputType="number" />
 
                 <TextView
                     android:id="@+id/bathroomsLabel"
@@ -229,6 +233,7 @@
                     android:layout_weight="0.5"
                     android:ems="10"
                     android:inputType="textPersonName" />
+
                 <TextView
                     android:id="@+id/yearBuiltLabel"
                     android:layout_width="match_parent"
@@ -245,7 +250,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
                     android:ems="10"
-                    android:inputType="textPersonName" />
+                    android:inputType="number" />
 
                 <TextView
                     android:id="@+id/floorsLabel"
@@ -263,7 +268,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
                     android:ems="10"
-                    android:inputType="textPersonName" />
+                    android:inputType="numberDecimal" />
 
                 <TextView
                     android:id="@+id/zipcodeLabel"
@@ -281,7 +286,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
                     android:ems="10"
-                    android:inputType="textPersonName" />
+                    android:hint="Between 98000 and 98200"
+                    android:inputType="number" />
 
                 <TextView
                     android:id="@+id/squareFootLiving15Label"
@@ -299,7 +305,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
                     android:ems="10"
-                    android:inputType="textPersonName" />
+                    android:inputType="number" />
 
             </LinearLayout>
 

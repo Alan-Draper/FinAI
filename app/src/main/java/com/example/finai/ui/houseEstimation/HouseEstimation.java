@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -50,7 +51,6 @@ public class HouseEstimation extends Fragment {
        FirebaseCustomRemoteModel remoteModel =
                 new FirebaseCustomRemoteModel.Builder("HousePriceTest").build();
         FirebaseModelDownloadConditions conditions = new FirebaseModelDownloadConditions.Builder()
-                .requireWifi()
                 .build();
         FirebaseModelManager.getInstance().download(remoteModel, conditions)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -68,11 +68,13 @@ public class HouseEstimation extends Fragment {
 
         sqFtLiving = root.findViewById(R.id.squareFootLivingText);
         latitude = root.findViewById(R.id.latitudeText);
+        latitude.setOnClickListener(v -> Toast.makeText(getActivity(), "Latitude must be between 47.1555 and 47.7780", Toast.LENGTH_LONG).show());
         sqFtAbove = root.findViewById(R.id.squareFootAboveText);
         sqFtBasement = root.findViewById(R.id.squareFootBasementText);
         waterfrontBox = root.findViewById(R.id.waterfront_box);
         grade = root.findViewById(R.id.grade_box);
         longitude = root.findViewById(R.id.longitudeText);
+        longitude.setOnClickListener(v -> Toast.makeText(getActivity(), "Latitude must be between -121.315 and -122.515", Toast.LENGTH_LONG).show());
         view = root.findViewById(R.id.view_box);
         condition = root.findViewById(R.id.condition_box);
         bedrooms = root.findViewById(R.id.bedroomsText);
@@ -80,6 +82,7 @@ public class HouseEstimation extends Fragment {
         yearBuilt = root.findViewById(R.id.yearBuiltText);
         floors =root.findViewById(R.id.floorsText);
         zipcode= root.findViewById(R.id.zipcodeText);
+        zipcode.setOnClickListener(v -> Toast.makeText(getActivity(), "Zipcode must be between 98000 and 98200", Toast.LENGTH_LONG).show());
         sqFtLiving15 = root.findViewById(R.id.squareFootLiving15Text);
 
         submitHouseApplication = root.findViewById(R.id.submitHouseEstimation);
@@ -116,7 +119,7 @@ public class HouseEstimation extends Fragment {
             dataout.rewind();
             FloatBuffer costs = dataout.asFloatBuffer();
             float housePrice = costs.get();
-            Log.i(TAG, String.format("%s: %1.2f", "probability", housePrice));
+           // Log.i(TAG, String.format("%s: %1.2f", "probability", housePrice));
 
             writeNewHouseApplication(houseRef.push().getKey(),
                     auth.getUid(),
