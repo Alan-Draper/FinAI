@@ -2,6 +2,8 @@ package com.example.finai.ui.loan;
 
 import androidx.annotation.RequiresApi;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -16,11 +18,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.finai.objects.Loan;
 import com.example.finai.R;
 import com.example.finai.objects.LoanOfficerApplications;
 import com.example.finai.objects.User;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -32,37 +36,37 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.ml.common.modeldownload.FirebaseModelDownloadConditions;
 import com.google.firebase.ml.common.modeldownload.FirebaseModelManager;
 import com.google.firebase.ml.custom.FirebaseCustomRemoteModel;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import org.tensorflow.lite.Interpreter;
 
 import java.io.File;
+import java.net.URI;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class LoanApplication extends Fragment {
     //interpreter for using the algorithm
-    Interpreter interpreter;
-    Button submitLoanApplication;
-    Spinner genderBox, maritalStatusBox, dependantsBox, educationBox,employmentBox, locationBox;
-    TextView incomeBox, coIncomeBox, loanAmountBox, loanTermBox, creditScoreBox;
-    String gender, maritalStatus,dependants,education,employment,income,coIncome,loanAmount,loanTerm,creditScore, location, loanId, loanStatus;
-    FirebaseAuth auth = FirebaseAuth.getInstance();
+    private Interpreter interpreter;
+    private Button submitLoanApplication,uploadDocumentsButton;
+    private Spinner genderBox, maritalStatusBox, dependantsBox, educationBox,employmentBox, locationBox;
+    private TextView incomeBox, coIncomeBox, loanAmountBox, loanTermBox, creditScoreBox;
+    private String gender, maritalStatus,dependants,education,employment,income,coIncome,loanAmount,loanTerm,creditScore, location, loanId, loanStatus;
+    private Uri imageUri;
+    private StorageReference storageReference;
+    private FirebaseAuth auth = FirebaseAuth.getInstance();
 
-    DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
-    DatabaseReference loanRef = mRootRef.child("LoanApplications");
-    DatabaseReference userRef = mRootRef.child("users");
-    DatabaseReference loanOfficerRef = mRootRef.child("loanOfficer");
-    ArrayList<LoanOfficerApplications> lList = new ArrayList<>();
-    ArrayList<User> cUser = new ArrayList<>();
-
-
-
-
-    public static LoanApplication newInstance() {
-        return new LoanApplication();
-    }
+    private DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
+    private DatabaseReference loanRef = mRootRef.child("LoanApplications");
+    private DatabaseReference userRef = mRootRef.child("users");
+    private DatabaseReference loanOfficerRef = mRootRef.child("loanOfficer");
+    private ArrayList<LoanOfficerApplications> lList = new ArrayList<>();
+    private ArrayList<User> cUser = new ArrayList<>();
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -89,6 +93,8 @@ public class LoanApplication extends Fragment {
                     }
                 });
 
+        loanId = loanRef.push().getKey();
+
         //assigning variables to all objects on the view
         lList = populateLoanList();
         genderBox = root.findViewById(R.id.genderText);
@@ -103,11 +109,15 @@ public class LoanApplication extends Fragment {
         creditScoreBox = root.findViewById(R.id.creditScoreText);
         locationBox = root.findViewById(R.id.location_box);
         submitLoanApplication = root.findViewById(R.id.submitLoan);
+        submitLoanApplication.setVisibility(View.INVISIBLE);
+        uploadDocumentsButton = root.findViewById(R.id.uploadDocumentsButton);
         cUser = getCurrentUser();
 
         //ensuring that all variables suit the input needed for the algorithm
         //needs to be clearer for end user in next version
         submitLoanApplication.setOnClickListener(v -> {
+
+
 
             if (genderBox.getSelectedItem().toString().equals("Male")) {
                 gender = "1";
@@ -138,9 +148,18 @@ public class LoanApplication extends Fragment {
             } else {
                 education = "0";
             }
-            income = incomeBox.getText().toString();
-            coIncome = coIncomeBox.getText().toString();
-            loanAmount = loanAmountBox.getText().toString();
+            income = String.valueOf(Integer.parseInt(incomeBox.getText().toString())/10);
+            if(!coIncomeBox.getText().toString().equals("0")){
+                coIncome = coIncomeBox.getText().toString();
+            }else{
+                coIncome = String.valueOf(Integer.parseInt(coIncomeBox.getText().toString())/10);
+            }
+
+            if(!loanAmountBox.getText().toString().equals("0")){
+                loanAmount = loanAmountBox.getText().toString();
+            }else{
+                loanAmount = String.valueOf(Integer.parseInt(loanAmountBox.getText().toString())/10);
+            }
             loanTerm = loanTermBox.getText().toString();
             //availability of a loan in seattle is not possible with a credit score of under 620
             int creditscoreValue = Integer.parseInt(creditScoreBox.getText().toString());
@@ -188,23 +207,22 @@ public class LoanApplication extends Fragment {
 
         //using the probability from the interpreter to push the loan application with the status to the database
         if (probability <= 0.5) {
-            //if less then 0.5 probability of loan then it is automatically rejected
-            //current acuarracy of loan model is 72 percent, will be imroved in later version
             loanStatus = "Rejected";
-            writeNewLoan(loanRef.push().getKey(), auth.getUid(), genderBox.getSelectedItem().toString(),
-                    maritalStatusBox.getSelectedItem().toString(),
-                    dependantsBox.getSelectedItem().toString(),
-                    employmentBox.getSelectedItem().toString(),
-                    educationBox.getSelectedItem().toString(),
-                    income,coIncome,loanAmount,loanTerm,creditScore, loanStatus, locationBox.getSelectedItem().toString(), cUser.get(0).getLoanOfficer());
-            Navigation.findNavController(root).navigate(R.id.action_loanApplication_to_rejected);
+                writeNewLoan(loanId, auth.getUid(), genderBox.getSelectedItem().toString(),
+                        maritalStatusBox.getSelectedItem().toString(),
+                        dependantsBox.getSelectedItem().toString(),
+                        employmentBox.getSelectedItem().toString(),
+                        educationBox.getSelectedItem().toString(),
+                        income, coIncome, loanAmount, loanTerm, creditScore, loanStatus, locationBox.getSelectedItem().toString(), cUser.get(0).getLoanOfficer());
+                Navigation.findNavController(root).navigate(R.id.action_loanApplication_to_rejected);
+
         } else {
             loanStatus = "Pre Approved";
             //assigns a new loan officer using the random function below or assigns the same loan officer if a previous application exists
             System.out.println(cUser.size());
             if(cUser.get(0).getLoanOfficer().equals("none")) {
                 String loanOfficer = findLoanOfficer();
-                writeNewLoan(loanRef.push().getKey(), auth.getUid(), genderBox.getSelectedItem().toString(),
+                writeNewLoan(loanId, auth.getUid(), genderBox.getSelectedItem().toString(),
                         maritalStatusBox.getSelectedItem().toString(),
                         dependantsBox.getSelectedItem().toString(),
                         employmentBox.getSelectedItem().toString(),
@@ -213,7 +231,8 @@ public class LoanApplication extends Fragment {
                 System.out.println(loanOfficer);
                 Navigation.findNavController(root).navigate(R.id.action_loanApplication_to_approved);
             } else {
-                writeNewLoan(loanRef.push().getKey(), auth.getUid(), genderBox.getSelectedItem().toString(),
+
+                writeNewLoan(loanId, auth.getUid(), genderBox.getSelectedItem().toString(),
                         maritalStatusBox.getSelectedItem().toString(),
                         dependantsBox.getSelectedItem().toString(),
                         employmentBox.getSelectedItem().toString(),
@@ -225,6 +244,14 @@ public class LoanApplication extends Fragment {
             }
         }
         });
+
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference();
+
+        uploadDocumentsButton.setOnClickListener(v -> {
+            choosePicture();
+        });
+
 
         return root;
     }
@@ -281,7 +308,6 @@ public class LoanApplication extends Fragment {
 
         public ArrayList<LoanOfficerApplications> populateLoanList () {
             //returns a list of loan officers from the database to get their open loans
-            String UID = auth.getUid();
             Query findNew = loanOfficerRef.orderByKey();
             findNew.addValueEventListener(new ValueEventListener() {
 
@@ -347,6 +373,50 @@ public class LoanApplication extends Fragment {
 
             }
         });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && data != null && data.getData() != null) {
+            imageUri = data.getData();
+            uploadPicture(loanId);
+
+        }
+    }
+
+    private void uploadPicture(String loanid) {
+        String UID = auth.getUid();
+        StorageReference riversRef = storageReference.child("userDocuments/" + UID + "/" + loanid);
+
+        riversRef.putFile(imageUri)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                        DatabaseReference documentUploadStatus = mRootRef.child("users").child(UID).child("documentUploaded");
+                        documentUploadStatus.setValue("1");
+                        Toast.makeText(getActivity(), "Upload successful.", Toast.LENGTH_SHORT).show();
+                        submitLoanApplication.setVisibility(View.VISIBLE);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        Toast.makeText(getActivity(), "Upload failed.", Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+
+    }
+
+    private void choosePicture() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent, 1);
+
+
     }
 
 }
