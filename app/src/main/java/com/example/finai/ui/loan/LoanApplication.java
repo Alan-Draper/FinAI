@@ -20,6 +20,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.finai.DbHelper;
 import com.example.finai.objects.Loan;
 import com.example.finai.R;
 import com.example.finai.objects.LoanOfficerApplications;
@@ -64,6 +65,7 @@ public class LoanApplication extends Fragment {
     private DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
     private DatabaseReference loanRef = mRootRef.child("LoanApplications");
     private DatabaseReference userRef = mRootRef.child("users");
+    private DatabaseReference cUserRef = userRef.child(auth.getUid());
     private DatabaseReference loanOfficerRef = mRootRef.child("loanOfficer");
     private ArrayList<LoanOfficerApplications> lList = new ArrayList<>();
     private ArrayList<User> cUser = new ArrayList<>();
@@ -94,7 +96,6 @@ public class LoanApplication extends Fragment {
                 });
 
         loanId = loanRef.push().getKey();
-
         //assigning variables to all objects on the view
         lList = populateLoanList();
         genderBox = root.findViewById(R.id.genderText);
@@ -112,7 +113,9 @@ public class LoanApplication extends Fragment {
         submitLoanApplication.setVisibility(View.INVISIBLE);
         uploadDocumentsButton = root.findViewById(R.id.uploadDocumentsButton);
         cUser = getCurrentUser();
-
+        if(DbHelper.checkUser(cUserRef.child("gender"))) {
+            DbHelper.getUser(cUserRef, genderBox, maritalStatusBox, dependantsBox, educationBox, employmentBox);
+        }
         //ensuring that all variables suit the input needed for the algorithm
         //needs to be clearer for end user in next version
         submitLoanApplication.setOnClickListener(v -> {
@@ -148,18 +151,9 @@ public class LoanApplication extends Fragment {
             } else {
                 education = "0";
             }
-            income = String.valueOf(Integer.parseInt(incomeBox.getText().toString())/10);
-            if(!coIncomeBox.getText().toString().equals("0")){
-                coIncome = coIncomeBox.getText().toString();
-            }else{
-                coIncome = String.valueOf(Integer.parseInt(coIncomeBox.getText().toString())/10);
-            }
-
-            if(!loanAmountBox.getText().toString().equals("0")){
-                loanAmount = loanAmountBox.getText().toString();
-            }else{
-                loanAmount = String.valueOf(Integer.parseInt(loanAmountBox.getText().toString())/10);
-            }
+            income = String.valueOf(Integer.parseInt(incomeBox.getText().toString()));
+            coIncome = coIncomeBox.getText().toString();
+            loanAmount = loanAmountBox.getText().toString();
             loanTerm = loanTermBox.getText().toString();
             //availability of a loan in seattle is not possible with a credit score of under 620
             int creditscoreValue = Integer.parseInt(creditScoreBox.getText().toString());
@@ -203,7 +197,7 @@ public class LoanApplication extends Fragment {
             dataout.rewind();
             FloatBuffer probabilities = dataout.asFloatBuffer();
             float probability = probabilities.get();
-            System.out.println(probability);
+            System.out.println(Double.parseDouble(String.valueOf(probability)));
 
         //using the probability from the interpreter to push the loan application with the status to the database
         if (probability <= 0.5) {

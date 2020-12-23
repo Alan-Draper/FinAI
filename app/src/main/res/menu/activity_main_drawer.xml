@@ -14,11 +14,6 @@
             android:title="My Account" />
 
         <item
-            android:id="@+id/sign_out"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Sign out"
-            android:onClick="signOut"/>
-        <item
             android:id="@+id/phone_us"
             android:icon="@drawable/fui_ic_phone_white_24dp"
             android:onClick="ringFinAI"
@@ -28,5 +23,11 @@
             android:icon="@drawable/fui_ic_mail_white_24dp"
             android:onClick="emailFinai"
             android:title="Email Us" />
+
+        <item
+            android:id="@+id/sign_out"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="Sign out"
+            android:onClick="signOut"/>
     </group>
 </menu>
