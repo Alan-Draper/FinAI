@@ -36,10 +36,6 @@ public class MainActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        FloatingActionButton fab = findViewById(R.id.fab);
-        //placeholder for snackbar(to be used for implementation of chatbot on app)
-        fab.setOnClickListener(view -> Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show());
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
@@ -65,16 +61,12 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
-
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
-    @Override
     public boolean onSupportNavigateUp() {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
@@ -88,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void ringFinAI(MenuItem item) {
+        //method to allow calling of the bank, no known number but functionality is there
         Intent dial = new Intent();
         dial.setAction("android.intent.action.DIAL");
         dial.setData(Uri.parse("tel:00000000000"));
@@ -95,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void emailFinai(MenuItem item) {
+        //intent to allow users to email the bank directly
         String mailTo="finai@finai.com";
         Intent email_intent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto",mailTo, null));
         email_intent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Subject text here");

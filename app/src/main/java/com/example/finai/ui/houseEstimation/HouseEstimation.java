@@ -84,9 +84,7 @@ public class HouseEstimation extends Fragment {
         zipcode= root.findViewById(R.id.zipcodeText);
         zipcode.setOnClickListener(v -> Toast.makeText(getActivity(), "Zipcode must be between 98000 and 98200", Toast.LENGTH_LONG).show());
         sqFtLiving15 = root.findViewById(R.id.squareFootLiving15Text);
-
         submitHouseApplication = root.findViewById(R.id.submitHouseEstimation);
-
         submitHouseApplication.setOnClickListener(v -> {
 
             if (waterfrontBox.getSelectedItem().toString().equals("Yes")) {
@@ -119,7 +117,6 @@ public class HouseEstimation extends Fragment {
             dataout.rewind();
             FloatBuffer costs = dataout.asFloatBuffer();
             float housePrice = costs.get();
-           // Log.i(TAG, String.format("%s: %1.2f", "probability", housePrice));
 
             writeNewHouseApplication(houseRef.push().getKey(),
                     auth.getUid(),
