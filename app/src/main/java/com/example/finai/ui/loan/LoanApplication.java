@@ -151,9 +151,15 @@ public class LoanApplication extends Fragment {
             } else {
                 education = "0";
             }
-            income = String.valueOf(Integer.parseInt(incomeBox.getText().toString()));
-            coIncome = coIncomeBox.getText().toString();
-            loanAmount = loanAmountBox.getText().toString();
+            income = String.valueOf(Integer.parseInt(incomeBox.getText().toString())/10);
+            if(!coIncomeBox.getText().toString().equals("0")) {
+                coIncome = String.valueOf(Integer.parseInt(coIncomeBox.getText().toString())/10);
+            } else {
+                coIncome = coIncomeBox.getText().toString();
+            }
+            if (!loanAmountBox.getText().toString().equals("0")) {
+                loanAmount = String.valueOf(Integer.parseInt(loanAmountBox.getText().toString())/1000);
+            }
             loanTerm = loanTermBox.getText().toString();
             //availability of a loan in seattle is not possible with a credit score of under 620
             int creditscoreValue = Integer.parseInt(creditScoreBox.getText().toString());

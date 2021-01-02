@@ -70,7 +70,9 @@ public class CurrentApplication extends Fragment {
                         findLoanOfficerName(loan.getLoanOfficer(),lOfficer, phone);
                         //assigns loan details and changes the picture depending on status
                         //need to add approved label along with paypal window
-                        loanAmount.setText(loan.getLoanAmount());
+                        float loanA = Float.parseFloat(loan.getLoanAmount());
+                        loanA = loanA*1000;
+                        loanAmount.setText(String.valueOf(loanA));
                         loanTerm.setText(loan.getLoanTerm());;
                         if(loan.getLoanStatus().equals("Pre Approved")) {
                             currentStatus.setText(loan.getLoanStatus());
